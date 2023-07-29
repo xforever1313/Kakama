@@ -87,6 +87,34 @@ namespace Kakama.Tests.Api
         }
 
         [TestMethod]
+        public void AddNewNamespaceSlugTest()
+        {
+            // Setup
+            var ns = new Namespace
+            {
+                BaseUrl = new Uri( "https://shendrick.net" ),
+                Name = "xforever 1313",
+                Slug = null
+            };
+
+            var expectedNs = ns with
+            {
+                Slug = "xforever-1313",
+                Id = 1
+            };
+
+            // Act
+            int id = this.Uut.NamespaceManager.ConfigureNamespace( ns );
+            Namespace nsById = this.Uut.NamespaceManager.GetNamespaceById( id );
+            Namespace nsBySlug = this.Uut.NamespaceManager.GetNamespaceBySlug( expectedNs.Slug );
+
+            // Check
+            Assert.AreEqual( expectedNs.Id, id );
+            Assert.AreEqual( expectedNs, nsById );
+            Assert.AreEqual( expectedNs, nsBySlug );
+        }
+
+        [TestMethod]
         public void AddMultipleNamespaceTest()
         {
             // Setup
