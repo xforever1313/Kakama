@@ -42,6 +42,8 @@ namespace Kakama.Web
         /// </summary>
         public bool RewriteDoubleSlashes { get; init; } = false;
 
+        public bool NamespacesMapToUrl { get; init; } = false;
+
         /// <summary>
         /// Where to log information or greater messages to.
         /// Leave null for no logging to files.
