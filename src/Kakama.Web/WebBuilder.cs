@@ -17,6 +17,7 @@
 //
 
 using dotenv.net;
+using Kakama.Api;
 using Microsoft.AspNetCore.HttpOverrides;
 using Mono.Options;
 using Serilog;
@@ -32,7 +33,10 @@ namespace Kakama.Web
 
         private readonly Resources resources;
 
-        private WebConfig? webConfig;
+        /// <remarks>
+        /// This is null until <see cref="Run"/> is called.
+        /// </remarks>
+        private Serilog.ILogger? log;
 
         // ---------------- Constructor ----------------
 
@@ -40,25 +44,6 @@ namespace Kakama.Web
         {
             this.args = args;
             this.resources = new Resources();
-        }
-
-        // ---------------- Properties ----------------
-
-        /// <summary>
-        /// This is null until <see cref="Run"/> is called.
-        /// </summary>
-        public Serilog.ILogger? Log { get; private set; }
-
-        private WebConfig WebConfig
-        {
-            get
-            {
-                if( this.webConfig is null )
-                {
-                    ArgumentNullException.ThrowIfNull( this.webConfig, nameof( this.webConfig ) );
-                }
-                return this.webConfig;
-            }
         }
 
         // ---------------- Functions ----------------
@@ -135,49 +120,44 @@ namespace Kakama.Web
 
                 RunInternal();
 
-                this.Log?.Information( "Application Exiting" );
+                this.log?.Information( "Application Exiting" );
                 return 0;
             }
             catch( Exception e )
             {
-                this.Log?.Fatal( "FATAL ERROR:" + Environment.NewLine + e );
+                this.log?.Fatal( "FATAL ERROR:" + Environment.NewLine + e );
                 return -1;
             }
         }
 
-        private void ConfigureBuilder( WebApplicationBuilder builder )
-        {
-        }
-
-        private void ConfigureApp( WebApplication app )
-        {
-        }
-
         private void RunInternal()
         {
-            this.webConfig = WebConfigExtensions.FromEnvVar();
-            this.Log = CreateLog();
+            WebConfig webConfig = WebConfigExtensions.FromEnvVar();
+            this.log = CreateLog( webConfig );
+
+            using var api = new KakamaApi();
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
-            this.ConfigureBuilder( builder );
+            builder.Services.AddSingleton( api );
+            builder.Services.AddSingleton( this.resources );
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Host.UseSerilog( this.Log );
+            builder.Host.UseSerilog( this.log );
 
             WebApplication app = builder.Build();
-            if( string.IsNullOrWhiteSpace( this.WebConfig.BasePath ) == false )
+            if( string.IsNullOrWhiteSpace( webConfig.BasePath ) == false )
             {
                 app.Use(
                     ( HttpContext context, RequestDelegate next ) =>
                     {
-                        context.Request.PathBase = this.WebConfig.BasePath;
+                        context.Request.PathBase = webConfig.BasePath;
                         return next( context );
                     }
                 );
             }
 
-            if( this.WebConfig.RewriteDoubleSlashes )
+            if( webConfig.RewriteDoubleSlashes )
             {
                 app.Use( ( context, next ) =>
                 {
@@ -197,7 +177,7 @@ namespace Kakama.Web
                 }
             );
 
-            if( this.WebConfig.AllowPorts == false )
+            if( webConfig.AllowPorts == false )
             {
                 app.Use(
                     ( HttpContext context, RequestDelegate next ) =>
@@ -234,7 +214,7 @@ namespace Kakama.Web
             app.Run();
         }
 
-        private Serilog.ILogger CreateLog()
+        private Serilog.ILogger CreateLog( WebConfig webConfig )
         {
             var logger = new LoggerConfiguration()
                 .WriteTo.Console( Serilog.Events.LogEventLevel.Information );
@@ -242,7 +222,7 @@ namespace Kakama.Web
             bool useFileLogger = false;
             bool useTelegramLogger = false;
 
-            FileInfo? logFile = this.WebConfig.LogFile;
+            FileInfo? logFile = webConfig.LogFile;
             if( logFile is not null )
             {
                 useFileLogger = true;
@@ -255,8 +235,8 @@ namespace Kakama.Web
                 );
             }
 
-            string? telegramBotToken = this.WebConfig.TelegramBotToken;
-            string? telegramChatId = this.WebConfig.TelegramChatId;
+            string? telegramBotToken = webConfig.TelegramBotToken;
+            string? telegramChatId = webConfig.TelegramChatId;
             if(
                 ( string.IsNullOrWhiteSpace( telegramBotToken ) == false ) &&
                 ( string.IsNullOrWhiteSpace( telegramChatId ) == false )
@@ -285,7 +265,7 @@ namespace Kakama.Web
 
         private void OnTelegramFailure( Exception e )
         {
-            this.Log?.Warning( $"Telegram message did not send:{Environment.NewLine}{e}" );
+            this.log?.Warning( $"Telegram message did not send:{Environment.NewLine}{e}" );
         }
 
         private void PrintCredits()

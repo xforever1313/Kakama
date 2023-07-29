@@ -16,14 +16,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-namespace Kakama.Api
-{
-    public class KakamaApi : IDisposable
-    {
-        // ---------------- Functions ----------------
+using Markdig;
 
-        public void Dispose()
-        { 
+namespace Kakama.Web
+{
+    public static class MarkdownToHtmlConverter
+    {
+        public static string Convert( string markdown )
+        {
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build();
+
+            return Markdown.ToHtml( markdown, pipeline );
         }
     }
 }
