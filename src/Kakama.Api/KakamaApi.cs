@@ -29,6 +29,8 @@ namespace Kakama.Api
 
         NamespaceManager NamespaceManager { get; }
 
+        string Version { get; }
+
         // ---------------- Functions ----------------
 
         TDbConnection CreateDatabaseConnection<TDbConnection>()
@@ -80,6 +82,7 @@ namespace Kakama.Api
 
             this.Log = log;
             this.NamespaceManager = new NamespaceManager( this );
+            this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             this.inited = false;
             this.isDisposed = false;
@@ -90,6 +93,8 @@ namespace Kakama.Api
         public ILogger Log { get; private set; }
 
         public NamespaceManager NamespaceManager { get; private set; }
+
+        public string Version { get; private set; }
 
         // ---------------- Functions ----------------
 

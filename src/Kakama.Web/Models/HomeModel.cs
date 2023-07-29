@@ -16,26 +16,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using SethCS.IO;
+using Kakama.Api;
 
-namespace Kakama.Web
+namespace Kakama.Web.Models
 {
-    public static class Resources
+    public class HomeModel
     {
-        // ---------------- Functions ----------------
+        // ---------------- Constructor ----------------
 
-        public static string GetLicense()
+        public HomeModel( IKakamaApi api )
         {
-            return AssemblyResourceReader.ReadStringResource(
-                typeof( Resources ).Assembly, $"{nameof( Kakama )}.{nameof( Web )}.License.md"
-            );
+            this.Api = api;
+            this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
         }
 
-        public static string GetCredits()
-        {
-            return AssemblyResourceReader.ReadStringResource(
-                typeof( Resources ).Assembly, $"{nameof( Kakama )}.{nameof( Web )}.Credits.md"
-            );
-        }
+        // ---------------- Properties ----------------
+
+        public IKakamaApi Api { get; private set; }
+
+        public string Version { get; private set; }
     }
 }

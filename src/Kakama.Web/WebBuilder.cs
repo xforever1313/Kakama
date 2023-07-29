@@ -31,8 +31,6 @@ namespace Kakama.Web
 
         private readonly string[] args;
 
-        private readonly Resources resources;
-
         /// <remarks>
         /// This is null until <see cref="Run"/> is called.
         /// </remarks>
@@ -43,7 +41,6 @@ namespace Kakama.Web
         public WebBuilder( string[] args )
         {
             this.args = args;
-            this.resources = new Resources();
         }
 
         // ---------------- Functions ----------------
@@ -142,8 +139,7 @@ namespace Kakama.Web
             using var api = new KakamaApi( settings, this.log, Array.Empty<FileInfo>() );
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
-            builder.Services.AddSingleton( api );
-            builder.Services.AddSingleton( this.resources );
+            builder.Services.AddSingleton<IKakamaApi>( api );
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -272,17 +268,17 @@ namespace Kakama.Web
             this.log?.Warning( $"Telegram message did not send:{Environment.NewLine}{e}" );
         }
 
-        private void PrintCredits()
+        private static void PrintCredits()
         {
-            Console.WriteLine( this.resources.GetCredits() );
+            Console.WriteLine( Resources.GetCredits() );
         }
 
-        private void PrintLicense()
+        private static void PrintLicense()
         {
-            Console.WriteLine( this.resources.GetLicense() );
+            Console.WriteLine( Resources.GetLicense() );
         }
 
-        private void PrintVersion()
+        private static void PrintVersion()
         {
             Console.WriteLine( GetVersion() );
         }

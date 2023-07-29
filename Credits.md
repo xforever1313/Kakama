@@ -1,9 +1,6 @@
 # Credits
 
-ActivityPub.Inbox service is made possible by various third-party open source libraries, listed below.
-
-These are only the third-party libraries used for the Inbox Service.  For a list of libraries used
-for the static website instead, [click here](https://activitypub.shendrick.net/about/credits/).
+Kakama is made possible by various third-party open source libraries, listed below.
 
 ## Cake
 

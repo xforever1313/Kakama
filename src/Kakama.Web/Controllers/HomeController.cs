@@ -17,6 +17,7 @@
 //
 
 using System.Diagnostics;
+using Kakama.Api;
 using Kakama.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,16 +25,34 @@ namespace Kakama.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        // ---------------- Fields ----------------
 
-        public HomeController( ILogger<HomeController> logger )
+        private readonly IKakamaApi api;
+
+        // ---------------- Constructor ----------------
+
+        public HomeController( IKakamaApi api )
         {
-            _logger = logger;
+            this.api = api;
         }
+
+        // ---------------- Functions ----------------
 
         public IActionResult Index()
         {
-            return View();
+            return View( new HomeModel( this.api ) );
+        }
+
+        [Route( "license.html" )]
+        public IActionResult License()
+        {
+            return View( new HomeModel( this.api ) );
+        }
+
+        [Route( "credits.html" )]
+        public IActionResult Credits()
+        {
+            return View( new HomeModel( this.api ) );
         }
 
         public IActionResult Privacy()
@@ -44,7 +63,12 @@ namespace Kakama.Web.Controllers
         [ResponseCache( Duration = 0, Location = ResponseCacheLocation.None, NoStore = true )]
         public IActionResult Error()
         {
-            return View( new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } );
+            return View(
+                new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                }
+            );
         }
     }
 }
