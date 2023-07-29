@@ -16,33 +16,70 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using Kakama.Api.DatabaseEngines;
 using Serilog;
 
 namespace Kakama.Api
 {
     public interface IKakamaApi
     {
-        public ILogger Log { get; }
+        // ---------------- Properties ----------------
+
+        ILogger Log { get; }
+
+        NamespaceManager NamespaceManager { get; }
+
+        // ---------------- Functions ----------------
+
+        TDbConnection CreateDatabaseConnection<TDbConnection>()
+            where TDbConnection : BaseDatabaseConnection, new();
     }
 
-    public class KakamaApi : IDisposable
+    public class KakamaApi : IKakamaApi, IDisposable
     {
         // ---------------- Fields ----------------
 
+        protected readonly KakamaSettings settings;
+
         private readonly IEnumerable<FileInfo> pluginPaths;
 
-        private List<IKakamaPlugin> plugins;
+        private readonly IDatabaseEngine dbEngine;
+
+        private readonly List<IKakamaPlugin> plugins;
 
         private bool inited;
         private bool isDisposed;
 
         // ---------------- Constructor ----------------
 
-        public KakamaApi( ILogger log, IEnumerable<FileInfo> pluginPaths )
+        public KakamaApi( KakamaSettings settings, ILogger log ) :
+            this( settings, log, Array.Empty<FileInfo>() )
         {
-            this.Log = log;
+
+        }
+
+        public KakamaApi( KakamaSettings settings, ILogger log, IEnumerable<FileInfo> pluginPaths )
+        {
+            this.settings = settings;
             this.pluginPaths = pluginPaths;
             this.plugins = new List<IKakamaPlugin>();
+
+            if( settings.DatabaseEngine == DatabaseEngine.Sqlite )
+            {
+                this.dbEngine = new SqliteDatabaseEngine(
+                    this.settings.SqliteDatabaseLocation,
+                    this.settings.SqlitePoolConnection
+                );
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"The given database engine is not supported: {settings.DatabaseEngine}"
+                );
+            }
+
+            this.Log = log;
+            this.NamespaceManager = new NamespaceManager( this );
 
             this.inited = false;
             this.isDisposed = false;
@@ -51,6 +88,8 @@ namespace Kakama.Api
         // ---------------- Properties ----------------
 
         public ILogger Log { get; private set; }
+
+        public NamespaceManager NamespaceManager { get; private set; }
 
         // ---------------- Functions ----------------
 
@@ -61,17 +100,14 @@ namespace Kakama.Api
                 throw new InvalidOperationException( "API has already been inited!" );
             }
 
+            using( KakamaDatabaseConnection db = this.CreateKakamaDatabaseConnection() )
+            {
+                db.EnsureCreated();
+            }
+
             LoadPlugins();
 
             this.inited = true;
-        }
-
-        private void LoadPlugins()
-        {
-            // TODO.
-            foreach( FileInfo pluginPath in this.pluginPaths )
-            {
-            }
         }
 
         public void Dispose()
@@ -97,6 +133,31 @@ namespace Kakama.Api
             }
 
             this.isDisposed = true;
+        }
+
+        public TDbConnection CreateDatabaseConnection<TDbConnection>()
+            where TDbConnection : BaseDatabaseConnection, new()
+        {
+            TDbConnection connection = new TDbConnection();
+            connection.Init( this.dbEngine, this.Log );
+
+            return connection;
+        }
+
+        private void LoadPlugins()
+        {
+            // TODO.
+            foreach( FileInfo pluginPath in this.pluginPaths )
+            {
+            }
+        }
+    }
+
+    internal static class IKakamaApiExtnsions
+    {
+        internal static KakamaDatabaseConnection CreateKakamaDatabaseConnection( this IKakamaApi api )
+        {
+            return api.CreateDatabaseConnection<KakamaDatabaseConnection>();
         }
     }
 }

@@ -9,11 +9,18 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
 	<PackageReference Include="Serilog" />
+	<PackageReference Include="Slugify.Core" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\ActivityStreams\src\KristofferStrube.ActivityStreams\KristofferStrube.ActivityStreams.csproj" />
     <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Kakama.Tests</_Parameter1>
+	</AssemblyAttribute>
   </ItemGroup>
 
 </Project>
