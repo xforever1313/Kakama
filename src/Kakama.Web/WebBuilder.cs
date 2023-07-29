@@ -135,7 +135,7 @@ namespace Kakama.Web
             WebConfig webConfig = WebConfigExtensions.FromEnvVar();
             this.log = CreateLog( webConfig );
 
-            using var api = new KakamaApi();
+            using var api = new KakamaApi( this.log, Array.Empty<FileInfo>() );
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
             builder.Services.AddSingleton( api );

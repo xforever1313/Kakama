@@ -16,14 +16,87 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using Serilog;
+
 namespace Kakama.Api
 {
+    public interface IKakamaApi
+    {
+        public ILogger Log { get; }
+    }
+
     public class KakamaApi : IDisposable
     {
+        // ---------------- Fields ----------------
+
+        private readonly IEnumerable<FileInfo> pluginPaths;
+
+        private List<IKakamaPlugin> plugins;
+
+        private bool inited;
+        private bool isDisposed;
+
+        // ---------------- Constructor ----------------
+
+        public KakamaApi( ILogger log, IEnumerable<FileInfo> pluginPaths )
+        {
+            this.Log = log;
+            this.pluginPaths = pluginPaths;
+            this.plugins = new List<IKakamaPlugin>();
+
+            this.inited = false;
+            this.isDisposed = false;
+        }
+
+        // ---------------- Properties ----------------
+
+        public ILogger Log { get; private set; }
+
         // ---------------- Functions ----------------
 
+        public void Init()
+        {
+            if( this.inited )
+            {
+                throw new InvalidOperationException( "API has already been inited!" );
+            }
+
+            LoadPlugins();
+
+            this.inited = true;
+        }
+
+        private void LoadPlugins()
+        {
+            // TODO.
+            foreach( FileInfo pluginPath in this.pluginPaths )
+            {
+            }
+        }
+
         public void Dispose()
-        { 
+        {
+            if( this.isDisposed )
+            {
+                throw new ObjectDisposedException( this.GetType().Name );
+            }
+
+            foreach( IKakamaPlugin plugin in this.plugins )
+            {
+                try
+                {
+                    plugin.Dispose();
+                }
+                catch( Exception e )
+                {
+                    this.Log.Error(
+                        $"Error when tearing down plugin {plugin.Name}: {e.Message}."
+                    );
+                    this.Log.Debug( e.ToString() );
+                }
+            }
+
+            this.isDisposed = true;
         }
     }
 }
