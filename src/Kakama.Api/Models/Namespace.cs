@@ -17,6 +17,7 @@
 //
 
 using System.ComponentModel.DataAnnotations;
+using SethCS.Exceptions;
 
 namespace Kakama.Api.Models
 {
@@ -44,9 +45,8 @@ namespace Kakama.Api.Models
 
         /// <summary>
         /// The slug of the URL for this namespace.
-        /// If this is set to null, then it will be <see cref="Name"/>
-        /// that is converted to lowercase, and all spaces are replaced
-        /// with '_'.
+        /// If this is set to null, empty, or just whitespace,
+        /// then it will become the slug of <see cref="Name"/>
         /// </summary>
         public string? Slug { get; set; }
 
@@ -66,5 +66,28 @@ namespace Kakama.Api.Models
         /// When in doubt, leave this null.
         /// </summary>
         public Uri? BaseUrl { get; set; } = null;
+    }
+
+    internal static class NamespaceExtensions
+    {
+        public static void Validate( this Namespace ns )
+        {
+            var errors = new List<string>();
+
+            if( ns.Id < 0 )
+            {
+                errors.Add( $"ID can not be less than zero, got: {ns.Id}." );
+            }
+
+            if( string.IsNullOrWhiteSpace( ns.Name ) )
+            {
+                errors.Add( $"Namespace name can not be null, empty, or whitespace" );
+            }
+
+            if( errors.Any() )
+            {
+                throw new ListedValidationException( "Errors when validating namespace", errors );
+            }
+        }
     }
 }

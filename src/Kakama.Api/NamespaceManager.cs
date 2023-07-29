@@ -18,6 +18,7 @@
 
 using Kakama.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using SethCS.Exceptions;
 using Slugify;
 
 namespace Kakama.Api
@@ -55,6 +56,8 @@ namespace Kakama.Api
         /// </returns>
         public int ConfigureNamespace( Namespace ns )
         {
+            ns.Validate();
+
             if( ns.Slug is null )
             {
                 var slugHelper = new SlugHelper();
@@ -66,11 +69,14 @@ namespace Kakama.Api
             {
                 DbSet<Namespace> namespaces = db.SafeGetNamespaces();
 
-                // TODO: Validate.
-                // Make sure anything required is not null or whitespace.
-                // Make sure slugs are unique.
+                if( namespaces.Any( n => ( n.Slug == ns.Slug ) && ( n.Id != ns.Id ) ) )
+                {
+                    throw new ValidationException(
+                        $"A namespace with the slug {ns.Slug} already exists.  We can not have duplicate slugs."
+                    );
+                }
 
-                namespaces.Add( ns );
+                namespaces.Update( ns );
                 db.SaveChanges();
 
                 this.api.Log.Debug( $"Namespace '{ns.Name}' has been added or modified.  Its ID is {ns.Id}." );
@@ -84,7 +90,7 @@ namespace Kakama.Api
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
             {
-                return db.SafeGetNamespaces().Where( n => true );
+                return db.SafeGetNamespaces().Where( n => true ).ToArray();
             }
         }
 
