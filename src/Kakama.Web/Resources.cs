@@ -1,4 +1,4 @@
-//
+﻿//
 // Kakama - An ActivityPub Bot Framework
 // Copyright (C) 2023 Seth Hendrick
 // 
@@ -16,14 +16,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using SethCS.IO;
+
 namespace Kakama.Web
 {
-    public class Program
+    public sealed class Resources
     {
-        public static int Main( string[] args )
+        // ---------------- Constructor ----------------
+
+        public Resources()
         {
-            var builder = new WebBuilder( args );
-            return builder.Run();
+        }
+
+        // ---------------- Functions ----------------
+
+        public string GetLicense()
+        {
+            return AssemblyResourceReader.ReadStringResource(
+                typeof( Resources ).Assembly, $"{nameof( Kakama )}.{nameof( Web )}.License.md"
+            );
+        }
+
+        public string GetCredits()
+        {
+            return AssemblyResourceReader.ReadStringResource(
+                typeof( Resources ).Assembly, $"{nameof( Kakama )}.{nameof( Web )}.Credits.md"
+            );
         }
     }
 }
