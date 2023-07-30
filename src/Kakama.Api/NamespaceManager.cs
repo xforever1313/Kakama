@@ -125,5 +125,31 @@ namespace Kakama.Api
             return TryGetNamespaceById( id ) ??
                 throw new NamespaceNotFoundException( $"Could not find namespace by id: {id}" );
         }
+
+        /// <summary>
+        /// Does the given namespace by id exists?
+        /// </summary>
+        public bool NamespaceExists( int id )
+        {
+            using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
+            {
+                DbSet<Namespace> namespaces = db.SafeGetNamespaces();
+
+                return namespaces.Any( n => n.Id == id );
+            }
+        }
+
+        /// <summary>
+        /// Gets the total number of namespaces saved.
+        /// </summary>
+        public int GetNumberOfNamespaces()
+        {
+            using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
+            {
+                DbSet<Namespace> namespaces = db.SafeGetNamespaces();
+
+                return namespaces.Count();
+            }
+        }
     }
 }

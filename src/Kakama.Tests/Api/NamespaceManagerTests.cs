@@ -84,6 +84,8 @@ namespace Kakama.Tests.Api
             Assert.AreEqual( expectedNs.Id, id );
             Assert.AreEqual( expectedNs, nsById );
             Assert.AreEqual( expectedNs, nsBySlug );
+            Assert.IsTrue( this.Uut.NamespaceManager.NamespaceExists( expectedNs.Id ) );
+            Assert.AreEqual( 1, this.Uut.NamespaceManager.GetNumberOfNamespaces() );
         }
 
         [TestMethod]
@@ -112,6 +114,8 @@ namespace Kakama.Tests.Api
             Assert.AreEqual( expectedNs.Id, id );
             Assert.AreEqual( expectedNs, nsById );
             Assert.AreEqual( expectedNs, nsBySlug );
+            Assert.IsTrue( this.Uut.NamespaceManager.NamespaceExists( expectedNs.Id ) );
+            Assert.AreEqual( 1, this.Uut.NamespaceManager.GetNumberOfNamespaces() );
         }
 
         [TestMethod]
@@ -166,6 +170,10 @@ namespace Kakama.Tests.Api
             Assert.AreEqual( 2, allNamespaes.Count() );
             Assert.AreEqual( expectedNs1, allNamespaes.First() );
             Assert.AreEqual( expectedNs2, allNamespaes.Last() );
+
+            Assert.IsTrue( this.Uut.NamespaceManager.NamespaceExists( expectedNs1.Id ) );
+            Assert.IsTrue( this.Uut.NamespaceManager.NamespaceExists( expectedNs2.Id ) );
+            Assert.AreEqual( 2, this.Uut.NamespaceManager.GetNumberOfNamespaces() );
         }
 
         [TestMethod]
@@ -203,6 +211,9 @@ namespace Kakama.Tests.Api
 
             Assert.AreEqual( 1, allNamespaes.Count() );
             Assert.AreEqual( expectedNs, allNamespaes.First() );
+
+            Assert.IsTrue( this.Uut.NamespaceManager.NamespaceExists( expectedNs.Id ) );
+            Assert.AreEqual( 1, this.Uut.NamespaceManager.GetNumberOfNamespaces() );
         }
 
         [TestMethod]
@@ -238,6 +249,9 @@ namespace Kakama.Tests.Api
 
             Assert.AreEqual( 1, allNamespaes.Count() );
             Assert.AreEqual( expectedNs, allNamespaes.First() );
+
+            Assert.IsTrue( this.Uut.NamespaceManager.NamespaceExists( expectedNs.Id ) );
+            Assert.AreEqual( 1, this.Uut.NamespaceManager.GetNumberOfNamespaces() );
         }
 
         [TestMethod]
@@ -251,6 +265,9 @@ namespace Kakama.Tests.Api
             Assert.ThrowsException<NamespaceNotFoundException>(
                 () => this.Uut.NamespaceManager.GetNamespaceById( 1 )
             );
+
+            Assert.IsFalse( this.Uut.NamespaceManager.NamespaceExists( 1 ) );
+            Assert.AreEqual( 0, this.Uut.NamespaceManager.GetNumberOfNamespaces() );
         }
 
         [TestMethod]
