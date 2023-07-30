@@ -132,9 +132,7 @@ namespace Kakama.Web
             WebConfig webConfig = WebConfigExtensions.FromEnvVar();
             this.log = CreateLog( webConfig );
 
-            var settings = new KakamaSettings
-            {
-            };
+            KakamaSettings settings = KakamaSettingsExtensions.FromEnvVar();
 
             using var api = new KakamaApi( settings, this.log, Array.Empty<FileInfo>() );
 

@@ -39,4 +39,46 @@ namespace Kakama.Api
         /// </summary>
         public bool SqlitePoolConnection { get; init; } = true;
     }
+
+    public static class KakamaSettingsExtensions
+    {
+        // ---------------- Functions ----------------
+
+        public static KakamaSettings FromEnvVar()
+        {
+            bool NotNull( string envName, out string envValue )
+            {
+                envValue = Environment.GetEnvironmentVariable( envName ) ?? "";
+                return string.IsNullOrWhiteSpace( envValue ) == false;
+            }
+
+            var settings = new KakamaSettings();
+
+            if( NotNull( "DATABASE_ENGINE", out string engine ) )
+            {
+                settings = settings with
+                {
+                    DatabaseEngine = Enum.Parse<DatabaseEngine>( engine, true )
+                };
+            }
+
+            if( NotNull( "DATABASE_SQLITE_FILE", out string dbFile ) )
+            {
+                settings = settings with
+                {
+                    SqliteDatabaseLocation = new FileInfo( dbFile )
+                };
+            }
+
+            if( NotNull( "DATABASE_SQLITE_POOL_CONNECTION", out string poolConnection ) )
+            {
+                settings = settings with
+                {
+                    SqlitePoolConnection = bool.Parse( poolConnection )
+                };
+            }
+
+            return settings;
+        }
+    }
 }

@@ -69,7 +69,7 @@ namespace Kakama.Web
 
             var settings = new WebConfig();
 
-            if( NotNull( "APP_BASEPATH", out string basePath ) )
+            if( NotNull( "WEB_BASEPATH", out string basePath ) )
             {
                 settings = settings with
                 {
@@ -77,7 +77,7 @@ namespace Kakama.Web
                 };
             }
 
-            if( NotNull( "APP_ALLOW_PORTS", out string allowPorts ) )
+            if( NotNull( "WEB_ALLOW_PORTS", out string allowPorts ) )
             {
                 settings = settings with
                 {
@@ -85,7 +85,7 @@ namespace Kakama.Web
                 };
             }
 
-            if( NotNull( "APP_STRIP_DOUBLE_SLASH", out string stripDoubleSlash ) )
+            if( NotNull( "WEB_STRIP_DOUBLE_SLASH", out string stripDoubleSlash ) )
             {
                 settings = settings with
                 {
@@ -93,17 +93,17 @@ namespace Kakama.Web
                 };
             }
 
-            if( NotNull( "APP_LOG_FILE", out string logFile ) )
+            if( NotNull( "LOG_FILE", out string logFile ) )
             {
                 settings = settings with { LogFile = new FileInfo( logFile ) };
             }
 
-            if( NotNull( "APP_TELEGRAM_BOT_TOKEN", out string tgBotToken ) )
+            if( NotNull( "LOG_TELEGRAM_BOT_TOKEN", out string tgBotToken ) )
             {
                 settings = settings with { TelegramBotToken = tgBotToken };
             }
 
-            if( NotNull( "APP_TELEGRAM_CHAT_ID", out string tgChatId ) )
+            if( NotNull( "LOG_TELEGRAM_CHAT_ID", out string tgChatId ) )
             {
                 settings = settings with { TelegramChatId = tgChatId };
             }
