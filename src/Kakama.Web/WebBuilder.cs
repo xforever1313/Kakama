@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Mono.Options;
 using Serilog;
 using Serilog.Sinks.Telegram;
+using Serilog.Sinks.Telegram.Alternative;
 
 namespace Kakama.Web
 {

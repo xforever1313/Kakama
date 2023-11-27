@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="KristofferStrube.ActivityStreams" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
 	<PackageReference Include="Serilog" />
 	<PackageReference Include="Slugify.Core" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ActivityStreams\src\KristofferStrube.ActivityStreams\KristofferStrube.ActivityStreams.csproj" />
     <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
   </ItemGroup>
 
