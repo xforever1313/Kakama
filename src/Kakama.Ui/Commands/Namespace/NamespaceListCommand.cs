@@ -17,29 +17,23 @@
 //
 
 using System.CommandLine;
+using Kakama.Api;
 
 namespace Kakama.Cli.Commands.Namespace
 {
-    public sealed class NamespaceCommand
+    public sealed class NamespaceListCommand
     {
         // ---------------- Fields ----------------
 
         private readonly TextWriter consoleOut;
 
-        // -------- Sub Commands --------
-
-        private readonly NamespaceListCommand namespaceListCommand;
-
         // ---------------- Constructor ----------------
 
-        public NamespaceCommand( TextWriter consoleOut, GlobalOptions globalOptions )
+        public NamespaceListCommand( TextWriter consoleOut, GlobalOptions globalOptions )
         {
             this.consoleOut = consoleOut;
-            this.RootCommand = new Command( "namespace", "Manage Namespaces" );
-            this.RootCommand.SetHandler( this.Handler );
-
-            this.namespaceListCommand = new NamespaceListCommand( this.consoleOut, globalOptions );
-            this.RootCommand.Add( this.namespaceListCommand.RootCommand );
+            this.RootCommand = new Command( "list", "Lists all of the namespaces." );
+            this.RootCommand.SetHandler( this.Handler, globalOptions.EnvFileOption );
         }
 
         // ---------------- Properties ----------------
@@ -48,12 +42,12 @@ namespace Kakama.Cli.Commands.Namespace
 
         // ---------------- Functions ----------------
 
-        private void Handler()
+        private void Handler( string envFileLocation )
         {
-            this.consoleOut.WriteLine( $"Please specify a sub-command for {this.RootCommand.Name}.  Valid sub-commands are:" );
-            foreach( var subCommand in this.RootCommand.Subcommands )
+            IKakamaApi api = ApiFactory.CreateApi( envFileLocation );
+            foreach( Api.Models.Namespace ns in api.NamespaceManager.GetAllNamespaces() )
             {
-                this.consoleOut.WriteLine( $"- {subCommand.Name}" );
+                this.consoleOut.WriteLine( ns );
             }
         }
     }

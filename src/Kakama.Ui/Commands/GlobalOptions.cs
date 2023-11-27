@@ -16,16 +16,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Cli.Commands;
+using System.CommandLine;
 
-namespace Kakama.Ui
+namespace Kakama.Cli.Commands
 {
-    internal class Program
+    public sealed class GlobalOptions
     {
-        static int Main( string[] args )
+        // ---------------- Constructor ----------------
+
+        public GlobalOptions()
         {
-            var mainCommand = new MainCommand( Console.Out );
-            return mainCommand.Invoke( args );
+            this.EnvFileOption = new Option<string>(
+                "env",
+                "Location of .env file to load."
+            );
         }
+
+        // ---------------- Properties ----------------
+
+        public Option<string> EnvFileOption { get; private set; }
     }
 }

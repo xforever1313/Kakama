@@ -40,9 +40,14 @@ namespace Kakama.Cli.Commands
             this.rootCommand = new RootCommand(
                 $"Admin program for {nameof( Kakama )}"
             );
+
+            var globalOptions = new GlobalOptions();
+
+            this.rootCommand.AddGlobalOption( globalOptions.EnvFileOption );
+
             this.rootCommand.SetHandler( this.Handler );
 
-            this.namespaceCommand = new NamespaceCommand( this.consoleOut );
+            this.namespaceCommand = new NamespaceCommand( consoleOut, globalOptions );
             this.rootCommand.Add( this.namespaceCommand.RootCommand );
         }
 
