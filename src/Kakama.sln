@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kakama.Tests", "Kakama.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.Analyzer", "..\SethCS\Seth.Analyzer\Seth.Analyzer.csproj", "{C7275AA4-B4C7-43C1-9377-91411AA817BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kakama.Ui", "Kakama.Ui\Kakama.Ui.csproj", "{AB0837CC-051D-4371-8F70-A70A768FA2CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kakama.Cli", "Kakama.Ui\Kakama.Cli.csproj", "{AB0837CC-051D-4371-8F70-A70A768FA2CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

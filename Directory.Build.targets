@@ -2,6 +2,7 @@
   <Import Project="$(MSBuildThisFileDirectory)\SethCS\Directory.Build.targets"/>
   
   <ItemGroup>
+    <PackageReference Update="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Update="dotenv.net" Version="3.1.3" />
     <PackageReference Update="KristofferStrube.ActivityStreams" Version="0.2.1" />
     <PackageReference Update="Markdig" Version="0.33.0" />
@@ -14,6 +15,5 @@
     <PackageReference Update="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Update="Serilog.Sinks.Telegram.Alternative" Version="1.4.0" />
     <PackageReference Update="Slugify.Core" Version="4.0.1" />
-    <PackageReference Update="Terminal.Gui" Version="1.14.1" />
   </ItemGroup>
 </Project>

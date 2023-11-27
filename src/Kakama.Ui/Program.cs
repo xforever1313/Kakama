@@ -16,13 +16,37 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using System.CommandLine;
+using Kakama.Cli.Commands;
+
 namespace Kakama.Ui
 {
     internal class Program
     {
         static int Main( string[] args )
         {
-            return 0;
+            var mainCommand = new MainCommand( Console.Out );
+            return mainCommand.Invoke( args );
+
+            var rootCommand = new RootCommand( "Admin program for Kakama." );
+            rootCommand.SetHandler(
+                () =>
+                {
+                    Console.WriteLine( "Hello world!" );
+                }
+            );
+
+            var subCommand1 = new Command( "namespace", "Manage Namespaces" );
+            rootCommand.Add( subCommand1 );
+            subCommand1.SetHandler(
+                () =>
+                {
+                    Console.WriteLine( "Namespace Stuff." );
+                }
+            );
+
+
+            return rootCommand.Invoke( args );
         }
     }
 }
