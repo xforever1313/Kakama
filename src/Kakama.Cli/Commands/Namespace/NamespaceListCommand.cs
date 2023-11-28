@@ -44,7 +44,7 @@ namespace Kakama.Cli.Commands.Namespace
 
         private void Handler( string envFileLocation )
         {
-            IKakamaApi api = ApiFactory.CreateApi( envFileLocation );
+            using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
             foreach( Api.Models.Namespace ns in api.NamespaceManager.GetAllNamespaces() )
             {
                 this.consoleOut.WriteLine( ns );

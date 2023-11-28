@@ -28,6 +28,7 @@ namespace Kakama.Cli.Commands.Namespace
 
         // -------- Sub Commands --------
 
+        private readonly NamespaceAddCommand namespaceAddCommand;
         private readonly NamespaceListCommand namespaceListCommand;
 
         // ---------------- Constructor ----------------
@@ -37,6 +38,9 @@ namespace Kakama.Cli.Commands.Namespace
             this.consoleOut = consoleOut;
             this.RootCommand = new Command( "namespace", "Manage Namespaces" );
             this.RootCommand.SetHandler( this.Handler );
+
+            this.namespaceAddCommand = new NamespaceAddCommand( this.consoleOut, globalOptions );
+            this.RootCommand.Add( this.namespaceAddCommand .RootCommand );
 
             this.namespaceListCommand = new NamespaceListCommand( this.consoleOut, globalOptions );
             this.RootCommand.Add( this.namespaceListCommand.RootCommand );

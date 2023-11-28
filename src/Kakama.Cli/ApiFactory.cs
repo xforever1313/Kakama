@@ -24,7 +24,7 @@ namespace Kakama.Cli
 {
     internal static class ApiFactory
     {
-        public static IKakamaApi CreateApi( string? envFileLocation )
+        public static KakamaApi CreateApi( string? envFileLocation )
         {
             ILogger log = new LoggerConfiguration()
                 .WriteTo.Console()
