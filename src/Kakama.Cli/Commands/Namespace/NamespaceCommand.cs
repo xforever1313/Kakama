@@ -29,6 +29,7 @@ namespace Kakama.Cli.Commands.Namespace
         // -------- Sub Commands --------
 
         private readonly NamespaceAddCommand namespaceAddCommand;
+        private readonly NamespaceDeleteCommand namespaceDeleteCommand;
         private readonly NamespaceListCommand namespaceListCommand;
 
         // ---------------- Constructor ----------------
@@ -40,7 +41,10 @@ namespace Kakama.Cli.Commands.Namespace
             this.RootCommand.SetHandler( this.Handler );
 
             this.namespaceAddCommand = new NamespaceAddCommand( this.consoleOut, globalOptions );
-            this.RootCommand.Add( this.namespaceAddCommand .RootCommand );
+            this.RootCommand.Add( this.namespaceAddCommand.RootCommand );
+
+            this.namespaceDeleteCommand = new NamespaceDeleteCommand( this.consoleOut, globalOptions );
+            this.RootCommand.Add( this.namespaceDeleteCommand.RootCommand );
 
             this.namespaceListCommand = new NamespaceListCommand( this.consoleOut, globalOptions );
             this.RootCommand.Add( this.namespaceListCommand.RootCommand );
