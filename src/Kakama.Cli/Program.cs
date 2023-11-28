@@ -18,7 +18,7 @@
 
 using Kakama.Cli.Commands;
 
-namespace Kakama.Ui
+namespace Kakama.Cli
 {
     internal class Program
     {
