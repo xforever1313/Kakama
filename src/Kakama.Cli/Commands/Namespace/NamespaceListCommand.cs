@@ -21,7 +21,7 @@ using Kakama.Api;
 
 namespace Kakama.Cli.Commands.Namespace
 {
-    public sealed class NamespaceListCommand
+    public sealed class NamespaceListCommand : IKakamaCommand
     {
         // ---------------- Fields ----------------
 
@@ -38,7 +38,7 @@ namespace Kakama.Cli.Commands.Namespace
 
         // ---------------- Properties ----------------
 
-        internal Command RootCommand { get; private set; }
+        public Command RootCommand { get; private set; }
 
         // ---------------- Functions ----------------
 

@@ -20,7 +20,7 @@ using System.CommandLine;
 
 namespace Kakama.Cli.Commands.Namespace
 {
-    public sealed class NamespaceCommand
+    public sealed class NamespaceCommand : IKakamaCommand
     {
         // ---------------- Fields ----------------
 
@@ -48,7 +48,7 @@ namespace Kakama.Cli.Commands.Namespace
 
         // ---------------- Properties ----------------
 
-        internal Command RootCommand { get; private set; }
+        public Command RootCommand { get; private set; }
 
         // ---------------- Functions ----------------
 
