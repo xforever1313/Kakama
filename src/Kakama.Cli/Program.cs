@@ -24,8 +24,17 @@ namespace Kakama.Cli
     {
         static int Main( string[] args )
         {
-            var mainCommand = new MainCommand( Console.Out );
-            return mainCommand.Invoke( args );
+            try
+            {
+                var mainCommand = new MainCommand( Console.Out );
+                return mainCommand.Invoke( args );
+            }
+            catch( Exception e )
+            {
+                Console.WriteLine( "FATAL: Unhandled Exception:" );
+                Console.WriteLine( e.ToString() );
+                return -1;
+            }
         }
     }
 }
