@@ -31,7 +31,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         [TestInitialize]
         public void TestSetup()
         {
-            this.uut = new KakamaCliHarness( "namespaceclitests.db", "namespacecli.env" );
+            this.uut = new KakamaCliHarness( "namespaceclitests.db", "namespaceaddcli.env" );
             this.uut.PerformTestSetup();
         }
 

@@ -31,6 +31,7 @@ namespace Kakama.Cli.Commands.Namespace
         private readonly NamespaceAddCommand namespaceAddCommand;
         private readonly NamespaceDeleteCommand namespaceDeleteCommand;
         private readonly NamespaceListCommand namespaceListCommand;
+        private readonly NamespaceModifyCommand namespaceModifyCommand;
 
         // ---------------- Constructor ----------------
 
@@ -48,6 +49,9 @@ namespace Kakama.Cli.Commands.Namespace
 
             this.namespaceListCommand = new NamespaceListCommand( this.consoleOut, globalOptions );
             this.RootCommand.Add( this.namespaceListCommand.RootCommand );
+
+            this.namespaceModifyCommand = new NamespaceModifyCommand( this.consoleOut, globalOptions );
+            this.RootCommand.Add( this.namespaceModifyCommand.RootCommand );
         }
 
         // ---------------- Properties ----------------
