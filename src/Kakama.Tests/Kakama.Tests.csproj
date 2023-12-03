@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kakama.Api\Kakama.Api.csproj" />
+    <ProjectReference Include="..\Kakama.Cli\Kakama.Cli.csproj" />
   </ItemGroup>
 
 </Project>
