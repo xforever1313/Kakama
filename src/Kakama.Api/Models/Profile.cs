@@ -18,7 +18,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography;
 
 namespace Kakama.Api.Models
 {
@@ -47,15 +46,17 @@ namespace Kakama.Api.Models
 
         /// <summary>
         /// The RSA keys associated with this profile.
+        /// If this is set to the default, a new RSA key will be generated,
+        /// and this id will be updated accordingly when configuring
+        /// the profile.
         /// </summary>
         /// <remarks>
         /// RSA keys are in their own table since
-        /// they are long, and are only needed
-        /// when posting.
+        /// they are long.
         /// </remarks>
         [Required]
         [ForeignKey( "RsaKeyId" )]
-        public int RsaKeyId { get; set; }
+        public int RsaKeyId { get; internal set; }
 
         /// <summary>
         /// The name of the profile.
