@@ -18,6 +18,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
 
 namespace Kakama.Api.Models
 {
@@ -45,6 +46,18 @@ namespace Kakama.Api.Models
         public int NamespaceId { get; set; }
 
         /// <summary>
+        /// The RSA keys associated with this profile.
+        /// </summary>
+        /// <remarks>
+        /// RSA keys are in their own table since
+        /// they are long, and are only needed
+        /// when posting.
+        /// </remarks>
+        [Required]
+        [ForeignKey( "RsaKeyId" )]
+        public int RsaKeyId { get; set; }
+
+        /// <summary>
         /// The name of the profile.
         /// 
         /// A profile name can not exist within the same namespace.
@@ -69,7 +82,5 @@ namespace Kakama.Api.Models
         /// An optional URL to the Profile's image.
         /// </summary>
         public Uri? ImageUrl { get; set; } = null;
-
-        // TODO: Keys.
     }
 }

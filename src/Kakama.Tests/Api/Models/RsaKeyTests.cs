@@ -22,58 +22,52 @@ using SethCS.Exceptions;
 namespace Kakama.Tests.Api.Models
 {
     [TestClass]
-    public sealed class NamespaceTests
+    public sealed class RsaKeyTests
     {
         // ---------------- Tests ----------------
+
+        /// <summary>
+        /// Makes sure that we can import keys
+        /// from PEM.
+        /// </summary>
+        [TestMethod]
+        public void KeyRoundTripTest()
+        {
+            // Setup
+            var uut1 = new RsaKey();
+            uut1.GenerateKey();
+
+            // Act
+            var uut2 = new RsaKey();
+            uut2.SetKey( uut1.PrivateKeyPem );
+
+            // Check
+            Assert.AreEqual( uut1, uut2 );
+            Assert.AreEqual( uut1.PublicKeyPem, uut2.PublicKeyPem );
+            Assert.AreEqual( uut2.PrivateKeyPem, uut2.PrivateKeyPem );
+        }
 
         [TestMethod]
         public void ValidateTest()
         {
-            var uut = new Namespace
-            {
-                Id = 0,
-                BaseUrl = new Uri( "https://shendrick.net" ),
-                Name = "xforever1313",
-                Slug = "xforever_1313"
-            };
-            var backup = uut with { };
+            var uut = new RsaKey().GenerateKey();
+            RsaKey backup = uut with { };
 
-            // Should verify out the gate:
+            // Should not fail to validate when generated.
             uut.Validate();
-            uut = backup with { };
 
-            // Null URL is fine.
-            uut.BaseUrl = null;
-            uut.Validate();
-            uut = backup with { };
-
-            // Null slug is fine.
-            uut.Slug = null;
-            uut.Validate();
-            uut = backup with { };
-
-            // Empty slug is fine; we'll treat it as null.
-            uut.Slug = "";
-            uut.Validate();
-            uut = backup with { };
-
-            // Whitespace slug is fine; we'll treat it as null.
-            uut.Slug = "    ";
-            uut.Validate();
-            uut = backup with { };
-
-            // Negative ID is not okay.
+            // ID less than 0 is invalid.
             uut.Id = -1;
             Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
             uut = backup with { };
 
-            // Empty string name is not okay.
-            uut.Name = "";
+            // Empty public key not valid.
+            uut.PublicKeyPem = "";
             Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
             uut = backup with { };
 
-            // Whitespace name is not okay.
-            uut.Name = "    ";
+            // Empty private key not valid.
+            uut.PrivateKeyPem = "";
             Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
             uut = backup with { };
         }
