@@ -22,20 +22,24 @@ using SethCS.Exceptions;
 namespace Kakama.Tests.Api.Models
 {
     [TestClass]
-    public sealed class NamespaceTests
+    public class ProfileTests
     {
         // ---------------- Tests ----------------
 
         [TestMethod]
         public void ValidateTest()
         {
-            var uut = new Namespace
+            var uut = new Profile
             {
                 Id = 0,
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                Description = "My Profile",
+                ImageUrl = new Uri( "https://shendrick.net/static/img/me.jpg" ),
                 Name = "xforever1313",
-                Slug = "xforever_1313"
+                NamespaceId = 1,
+                RsaKeyId = 1,
+                Slug = "xforever-1313"
             };
+
             var backup = uut with { };
 
             // Should verify out the gate:
@@ -43,7 +47,7 @@ namespace Kakama.Tests.Api.Models
             uut = backup with { };
 
             // Null URL is fine.
-            uut.BaseUrl = null;
+            uut.ImageUrl = null;
             uut.Validate();
             uut = backup with { };
 
@@ -67,13 +71,38 @@ namespace Kakama.Tests.Api.Models
             Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
             uut = backup with { };
 
-            // 0 ID is okay, it means add new namespace.
+            // 0 ID is okay, means add new profile.
             uut.Id = 0;
             uut.Validate();
             uut = backup with { };
 
-            // Positive ID is okay.
+            // 1 ID is okay, means profile exists.
             uut.Id = 1;
+            uut.Validate();
+            uut = backup with { };
+
+            // Negative Namespace ID is not okay.
+            uut.NamespaceId = -1;
+            Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
+            uut = backup with { };
+
+            // 0 Namespace ID is not okay.
+            uut.NamespaceId = 0;
+            Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
+            uut = backup with { };
+
+            // Negative RSA Key is not okay.
+            uut.RsaKeyId = -1;
+            Assert.ThrowsException<ListedValidationException>( () => uut.Validate() );
+            uut = backup with { };
+
+            // 0 RSA Key is okay (means generate new key).
+            uut.RsaKeyId = 0;
+            uut.Validate();
+            uut = backup with { };
+
+            // Positive RSA Key is okay (means key exists).
+            uut.RsaKeyId = 1;
             uut.Validate();
             uut = backup with { };
 

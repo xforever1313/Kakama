@@ -57,5 +57,14 @@ namespace Kakama.Api.Models
         /// </summary>
         [Required]
         public string Value { get; set; } = "";
+
+        /// <summary>
+        /// The order in which meta-data will appear in a profile.
+        /// The lesser this number is, the earlier it will appear.
+        /// This number does not need to be unique with other
+        /// <see cref="ProfileMetaData"/>, mapped to a profile.
+        /// If there'a a tie, order returned is simply not guarenteed.
+        /// </summary>
+        public int ExplictOrder { get; set; } = 0;
     }
 }

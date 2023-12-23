@@ -18,6 +18,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SethCS.Exceptions;
 
 namespace Kakama.Api.Models
 {
@@ -40,6 +41,10 @@ namespace Kakama.Api.Models
         /// The namespace this profile is a part of.
         /// Must be greater than 0.
         /// </summary>
+        /// <remarks>
+        /// Not internal since we should be able to change
+        /// a profile's namespace pretty easily.
+        /// </remarks>
         [Required]
         [ForeignKey( "NamespaceId" )]
         public int NamespaceId { get; set; }
@@ -53,6 +58,9 @@ namespace Kakama.Api.Models
         /// <remarks>
         /// RSA keys are in their own table since
         /// they are long.
+        /// 
+        /// Internal set since the manager should handle
+        /// setting up keys, not the user.
         /// </remarks>
         [Required]
         [ForeignKey( "RsaKeyId" )]
@@ -83,5 +91,38 @@ namespace Kakama.Api.Models
         /// An optional URL to the Profile's image.
         /// </summary>
         public Uri? ImageUrl { get; set; } = null;
+    }
+
+    internal static class ProfileExtensions
+    {
+        public static void Validate( this Profile profile )
+        {
+            var errors = new List<string>();
+
+            if( profile.Id < 0 )
+            {
+                errors.Add( $"ID can not be less than zero, got: {profile.Id}." );
+            }
+
+            if( profile.NamespaceId <= 0 )
+            {
+                errors.Add( $"Namespace ID can not be zero or less, got: {profile.NamespaceId}." );
+            }
+
+            if( profile.RsaKeyId < 0 )
+            {
+                errors.Add( $"RSA Key ID can not be less than zero, got: {profile.RsaKeyId}." );
+            }
+
+            if( string.IsNullOrWhiteSpace( profile.Name ) )
+            {
+                errors.Add( $"Profile name can not be null, empty, or whitespace" );
+            }
+
+            if( errors.Any() )
+            {
+                throw new ListedValidationException( "Errors when validating profile", errors );
+            }
+        }
     }
 }

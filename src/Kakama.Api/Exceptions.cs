@@ -39,4 +39,20 @@ namespace Kakama.Api
         {
         }
     }
+
+    public class ProfileNotFoundException : NotFoundException
+    {
+        public ProfileNotFoundException( string message ) :
+            base( message )
+        {
+        }
+    }
+
+    public class RsaKeyNotFoundException : NotFoundException
+    {
+        public RsaKeyNotFoundException( string message ) :
+            base( message )
+        {
+        }
+    }
 }

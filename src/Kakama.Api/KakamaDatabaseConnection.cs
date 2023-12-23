@@ -36,6 +36,8 @@ namespace Kakama.Api
 
         public DbSet<Profile>? Profiles { get; set; }
 
+        public DbSet<RsaKey>? RsaKeys { get; set; }
+
         public DbSet<ProfileMetaData>? ProfileMetadata { get; set; }
 
         public DbSet<Post>? Posts { get; set; }
@@ -47,6 +49,9 @@ namespace Kakama.Api
 
         public DbSet<Profile> SafeGetProfiles() =>
             this.Profiles ?? throw new ArgumentNullException( nameof( this.Profiles ) );
+
+        public DbSet<RsaKey> SafeGetRsaKeys() =>
+            this.RsaKeys ?? throw new ArgumentNullException( nameof( this.RsaKeys ) );
 
         public DbSet<ProfileMetaData> SafeGetProfileMetaData() =>
             this.ProfileMetadata ?? throw new ArgumentNullException( nameof( this.ProfileMetadata ) );
