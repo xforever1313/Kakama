@@ -29,6 +29,8 @@ namespace Kakama.Api
 
         NamespaceManager NamespaceManager { get; }
 
+        ProfileManager ProfileManager { get; }
+
         string Version { get; }
 
         // ---------------- Functions ----------------
@@ -82,6 +84,7 @@ namespace Kakama.Api
 
             this.Log = log;
             this.NamespaceManager = new NamespaceManager( this );
+            this.ProfileManager = new ProfileManager( this );
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             this.inited = false;
@@ -90,11 +93,12 @@ namespace Kakama.Api
 
         // ---------------- Properties ----------------
 
-        public ILogger Log { get; private set; }
+        public ILogger Log { get; }
 
-        public NamespaceManager NamespaceManager { get; private set; }
+        public NamespaceManager NamespaceManager { get; }
 
-        public string Version { get; private set; }
+        public ProfileManager ProfileManager { get; }
+        public string Version { get; }
 
         // ---------------- Functions ----------------
 
@@ -158,7 +162,7 @@ namespace Kakama.Api
         }
     }
 
-    internal static class IKakamaApiExtnsions
+    internal static class IKakamaApiExtensions
     {
         internal static KakamaDatabaseConnection CreateKakamaDatabaseConnection( this IKakamaApi api )
         {
