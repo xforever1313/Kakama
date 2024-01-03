@@ -190,6 +190,83 @@ namespace Kakama.Tests.Api
             Assert.AreNotEqual( oldPublicPem, newKey.PublicKeyPem );
         }
 
+        [TestMethod]
+        public void AddProfilesToDifferentNamespaceTest()
+        {
+            // Setup
+            var ns1 = new Namespace
+            {
+                Name = "Test Namespace 1"
+            };
+
+            this.Uut.NamespaceManager.ConfigureNamespace( ns1 );
+
+            var ns2 = new Namespace
+            {
+                Name = "Test Namespace 2"
+            };
+
+            this.Uut.NamespaceManager.ConfigureNamespace( ns2 );
+
+            const string slug = "xforever1313-slug";
+
+            var profile1 = new Profile
+            {
+                Name = "xforever1313",
+                NamespaceId = ns1.Id,
+                Description = "Test",
+                Slug = slug
+            };
+
+            // Make it the exact same profile,
+            // to test that we can have duplicate profiles
+            // across multiple namespaces.
+            var profile2 = profile1 with
+            {
+                NamespaceId = ns2.Id
+            };
+
+            // Act
+            int profile1Id = this.Uut.ProfileManager.ConfigureProfile( profile1 );
+            int profile2Id = this.Uut.ProfileManager.ConfigureProfile( profile2 );
+
+            // Check
+            Assert.AreEqual( 
+                1,
+                this.Uut.ProfileManager.GetTotalNumberOfProfilesInNamespace( ns1.Id )
+            );
+
+            Assert.AreEqual( 
+                1,
+                this.Uut.ProfileManager.GetTotalNumberOfProfilesInNamespace( ns2.Id )
+            );
+
+            Assert.AreEqual(
+                2,
+                this.Uut.ProfileManager.GetNumberOfProfiles()
+            );
+
+            Assert.AreEqual(
+                profile1,
+                this.Uut.ProfileManager.GetProfileBySlug( ns1.Id, slug )
+            );
+
+            Assert.AreEqual(
+                profile2,
+                this.Uut.ProfileManager.GetProfileBySlug( ns2.Id, slug )
+            );
+
+            Assert.AreEqual(
+                profile1,
+                this.Uut.ProfileManager.GetProfileById( profile1Id )
+            );
+
+            Assert.AreEqual(
+                profile2,
+                this.Uut.ProfileManager.GetProfileById( profile2Id )
+            );
+        }
+
         // ---------------- Test Helpers ----------------
 
         /// <summary>

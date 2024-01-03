@@ -76,10 +76,15 @@ namespace Kakama.Api
             {
                 DbSet<Profile> profiles = db.SafeGetProfiles();
 
-                if( profiles.Any( n => ( n.Slug == profile.Slug ) && ( n.Id != profile.Id ) ) )
+                if( profiles.Any(
+                    n => ( n.NamespaceId == profile.NamespaceId ) &&
+                         ( n.Slug == profile.Slug ) &&
+                         ( n.Id != profile.Id )
+                    )
+                )
                 {
                     throw new ValidationException(
-                        $"A profile with the slug {profile.Slug} already exists.  We can not have duplicate slugs."
+                        $"A profile with the slug {profile.Slug} within namespace {profile.NamespaceId} already exists.  We can not have duplicate slugs."
                     );
                 }
 
