@@ -88,6 +88,9 @@ namespace Kakama.Api
                     DbSet<RsaKey> rsaKeys = db.SafeGetRsaKeys();
                     var newKey = new RsaKey().GenerateKey();
                     rsaKeys.Update( newKey );
+                    // Must save changes before pulling the ID
+                    // to save to the profile.
+                    db.SaveChanges();
 
                     this.api.Log.Debug(
                         $"New RSA Key created for profile '{profile.Name}' has been added or modified.  Its ID is {newKey.Id}."
