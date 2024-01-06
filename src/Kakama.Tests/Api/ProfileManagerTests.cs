@@ -267,6 +267,53 @@ namespace Kakama.Tests.Api
             );
         }
 
+        [TestMethod]
+        public void AddProfileMetadataTest()
+        {
+            // Setup
+            Namespace ns = AddTestNamespace();
+            var profile = new Profile
+            {
+                Name = "Metadata Test 1",
+                NamespaceId = ns.Id
+            };
+            int profileId = this.Uut.ProfileManager.ConfigureProfile( profile );
+
+            var profileMetadata1 = new ProfileMetaData
+            {
+                ProfileId = profileId,
+                ExplictOrder = 2,
+                Name = "Website",
+                Value = "https://shendrick.net"
+            };
+
+            var profileMetadata2 = new ProfileMetaData
+            {
+                ProfileId = profileId,
+                ExplictOrder = 1,
+                Name = "Pronouns",
+                Value = "He/Him"
+            };
+
+            // Act
+            int metadataId1 = this.Uut.ProfileManager.ConfigureMetadata( profileMetadata1 );
+            int metadataId2 = this.Uut.ProfileManager.ConfigureMetadata( profileMetadata2 );
+
+            // Check
+            Assert.AreEqual( 1, metadataId1 );
+            Assert.AreEqual( 2, metadataId2 );
+            Assert.AreEqual( metadataId1, profileMetadata1.Id );
+            Assert.AreEqual( metadataId2, profileMetadata2.Id );
+
+            IList<ProfileMetaData> allMetaData = this.Uut.ProfileManager.GetMetaData( profileId );
+            Assert.AreEqual( 2, allMetaData.Count );
+
+            // With explicit order, the least explicit order should come first.
+            Assert.AreEqual( profileMetadata2, allMetaData[0] );
+            Assert.AreEqual( profileMetadata1, allMetaData[1] );
+        }
+
+
         // ---------------- Test Helpers ----------------
 
         /// <summary>
