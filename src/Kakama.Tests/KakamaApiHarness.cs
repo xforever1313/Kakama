@@ -17,7 +17,6 @@
 //
 
 using Kakama.Api;
-using Moq;
 using Serilog;
 
 namespace Kakama.Tests
@@ -42,7 +41,7 @@ namespace Kakama.Tests
                     // up between tests.
                     SqlitePoolConnection = false
                 },
-                new Mock<ILogger>( MockBehavior.Loose ).Object
+                new LoggerConfiguration().WriteTo.Console().CreateLogger()
             )
         {
         }

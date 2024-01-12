@@ -9,7 +9,9 @@
   <ItemGroup>
 	<PackageReference Include="KristofferStrube.ActivityStreams" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+	<PackageReference Include="Quartz" />
 	<PackageReference Include="Serilog" />
+	<PackageReference Include="Serilog.Extensions.Logging" />
 	<PackageReference Include="Slugify.Core" />
   </ItemGroup>
 

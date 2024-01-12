@@ -1,0 +1,124 @@
+﻿//
+// Kakama - An ActivityPub Bot Framework
+// Copyright (C) 2023 Seth Hendrick
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+
+using Kakama.Api;
+using Kakama.Api.EventScheduler;
+using Moq;
+using Serilog;
+
+namespace Kakama.Tests.Api
+{
+    [TestClass]
+    [DoNotParallelize]
+    public sealed class ScheduledEventManagerTests
+    {
+        // ---------------- Fields ----------------
+
+        private KakamaApiHarness? api;
+
+        private ScheduledEventManager? uut;
+
+        // ---------------- Setup / Teardown ----------------
+
+        [TestInitialize]
+        public void TestSetup()
+        {
+            this.api = new KakamaApiHarness( "scheduleTest" );
+            this.api.PerformTestSetup();
+
+            this.uut = this.api.EventManager;
+        }
+
+        [TestCleanup]
+        public void TestTeardown()
+        {
+            this.api?.PerformTestTearDown();
+        }
+
+        // ---------------- Properties ----------------
+
+        private ScheduledEventManager Uut
+        {
+            get
+            {
+                Assert.IsNotNull( this.uut );
+                return this.uut;
+            }
+        }
+
+        // ---------------- Tests ----------------
+
+        [TestMethod]
+        public void DoSingleEventOneIterationTest()
+        {
+            // Setup
+            using var countdownEvent = new CountdownEvent( 1 );
+
+            var testEvent1 = new TestEvent( countdownEvent );
+
+            this.Uut.Start();
+            
+            // Act
+            this.Uut.ConfigureEvent( testEvent1 );
+
+            // Check
+            WaitOnCountdownEvent( countdownEvent );
+        }
+
+        // ---------------- Test Helpers ----------------
+
+        private static void WaitOnCountdownEvent( CountdownEvent e )
+        {
+            Assert.IsTrue( e.Wait( TimeSpan.FromSeconds( 10 ) ) );
+        }
+
+        // ---------------- Helper Classes ----------------
+
+        private sealed class TestEvent : ScheduledEvent
+        {
+            // ---------------- Fields ----------------
+
+            private readonly CountdownEvent countdownEvent;
+
+            // ---------------- Constructor ----------------
+
+            public TestEvent( CountdownEvent countdownEvent )
+            {
+                this.countdownEvent = countdownEvent;
+            }
+
+            // ---------------- Properties ----------------
+
+            public override string CronString => "0,5,10,15,20,25,30,35,40,45,50,55 * * * * ?";
+
+            public override string EventName => "Test Event";
+
+            // ---------------- Functions ----------------
+
+            public override async Task ExecuteEvent( ScheduledEventParameters eventParams )
+            {
+                await Task.Run(
+                    () =>
+                    {
+                        this.countdownEvent.Signal();
+                    }
+                );
+            }
+        }
+    }
+}

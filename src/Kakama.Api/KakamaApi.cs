@@ -17,6 +17,7 @@
 //
 
 using Kakama.Api.DatabaseEngines;
+using Kakama.Api.EventScheduler;
 using Serilog;
 
 namespace Kakama.Api
@@ -30,6 +31,8 @@ namespace Kakama.Api
         NamespaceManager NamespaceManager { get; }
 
         ProfileManager ProfileManager { get; }
+
+        ScheduledEventManager EventManager { get; }
 
         string Version { get; }
 
@@ -85,6 +88,7 @@ namespace Kakama.Api
             this.Log = log;
             this.NamespaceManager = new NamespaceManager( this );
             this.ProfileManager = new ProfileManager( this );
+            this.EventManager = new ScheduledEventManager( this );
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             this.inited = false;
@@ -98,6 +102,9 @@ namespace Kakama.Api
         public NamespaceManager NamespaceManager { get; }
 
         public ProfileManager ProfileManager { get; }
+
+        public ScheduledEventManager EventManager { get; }
+
         public string Version { get; }
 
         // ---------------- Functions ----------------
@@ -116,6 +123,8 @@ namespace Kakama.Api
 
             LoadPlugins();
 
+            this.EventManager.Start();
+
             this.inited = true;
         }
 
@@ -125,6 +134,8 @@ namespace Kakama.Api
             {
                 throw new ObjectDisposedException( this.GetType().Name );
             }
+
+            this.EventManager.Dispose();
 
             foreach( IKakamaPlugin plugin in this.plugins )
             {
