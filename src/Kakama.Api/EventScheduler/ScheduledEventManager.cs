@@ -53,6 +53,7 @@ namespace Kakama.Api.EventScheduler
 
             this.job = JobBuilder.Create<KakamaJob>()
                 .WithIdentity( "Kakama Event" )
+                .StoreDurably()
                 .SetJobData( jobData )
                 .Build();
 

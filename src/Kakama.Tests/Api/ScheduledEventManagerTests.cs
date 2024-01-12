@@ -104,7 +104,7 @@ namespace Kakama.Tests.Api
 
             // ---------------- Properties ----------------
 
-            public override string CronString => "0,5,10,15,20,25,30,35,40,45,50,55 * * * * ?";
+            public override string CronString => "* * * * * ?";
 
             public override string EventName => "Test Event";
 
