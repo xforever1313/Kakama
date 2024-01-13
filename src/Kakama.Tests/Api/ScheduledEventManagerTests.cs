@@ -31,7 +31,7 @@ namespace Kakama.Tests.Api
 
         private KakamaApiHarness? api;
 
-        private ScheduledEventManager? uut;
+        private IScheduledEventManager? uut;
 
         // ---------------- Setup / Teardown ----------------
 
@@ -52,7 +52,7 @@ namespace Kakama.Tests.Api
 
         // ---------------- Properties ----------------
 
-        private ScheduledEventManager Uut
+        private IScheduledEventManager Uut
         {
             get
             {
@@ -70,8 +70,6 @@ namespace Kakama.Tests.Api
             using var countdownEvent = new CountdownEvent( 1 );
 
             var testEvent1 = new TestEvent( countdownEvent );
-
-            this.Uut.Start();
             
             // Act
             this.Uut.ConfigureEvent( testEvent1 );
@@ -87,8 +85,6 @@ namespace Kakama.Tests.Api
             using var countdownEvent = new CountdownEvent( 3 );
 
             var testEvent1 = new TestEvent( countdownEvent );
-
-            this.Uut.Start();
             
             // Act
             this.Uut.ConfigureEvent( testEvent1 );
@@ -106,8 +102,6 @@ namespace Kakama.Tests.Api
 
             var testEvent1 = new TestEvent( countdownEvent1 );
             var testEvent2 = new TestEvent( countdownEvent2 );
-
-            this.Uut.Start();
             
             // Act
             this.Uut.ConfigureEvent( testEvent1 );

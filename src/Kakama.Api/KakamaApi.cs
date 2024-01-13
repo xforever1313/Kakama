@@ -32,7 +32,7 @@ namespace Kakama.Api
 
         ProfileManager ProfileManager { get; }
 
-        ScheduledEventManager EventManager { get; }
+        IScheduledEventManager EventManager { get; }
 
         string Version { get; }
 
@@ -47,6 +47,8 @@ namespace Kakama.Api
         // ---------------- Fields ----------------
 
         protected readonly KakamaSettings settings;
+
+        private readonly ScheduledEventManager eventManager;
 
         private readonly IEnumerable<FileInfo> pluginPaths;
 
@@ -88,7 +90,7 @@ namespace Kakama.Api
             this.Log = log;
             this.NamespaceManager = new NamespaceManager( this );
             this.ProfileManager = new ProfileManager( this );
-            this.EventManager = new ScheduledEventManager( this );
+            this.eventManager = new ScheduledEventManager( this );
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             this.inited = false;
@@ -103,7 +105,7 @@ namespace Kakama.Api
 
         public ProfileManager ProfileManager { get; }
 
-        public ScheduledEventManager EventManager { get; }
+        public IScheduledEventManager EventManager => this.eventManager;
 
         public string Version { get; }
 
@@ -123,7 +125,7 @@ namespace Kakama.Api
 
             LoadPlugins();
 
-            this.EventManager.Start();
+            this.eventManager.Start();
 
             this.inited = true;
         }
@@ -135,7 +137,7 @@ namespace Kakama.Api
                 throw new ObjectDisposedException( this.GetType().Name );
             }
 
-            this.EventManager.Dispose();
+            this.eventManager.Dispose();
 
             foreach( IKakamaPlugin plugin in this.plugins )
             {
