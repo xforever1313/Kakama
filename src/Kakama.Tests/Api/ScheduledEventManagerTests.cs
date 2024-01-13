@@ -80,6 +80,44 @@ namespace Kakama.Tests.Api
             WaitOnCountdownEvent( countdownEvent );
         }
 
+        [TestMethod]
+        public void DoSingleEventThreeIterationTest()
+        {
+            // Setup
+            using var countdownEvent = new CountdownEvent( 3 );
+
+            var testEvent1 = new TestEvent( countdownEvent );
+
+            this.Uut.Start();
+            
+            // Act
+            this.Uut.ConfigureEvent( testEvent1 );
+
+            // Check
+            WaitOnCountdownEvent( countdownEvent );
+        }
+
+        [TestMethod]
+        public void DoTwoEventsThreeIterationTest()
+        {
+            // Setup
+            using var countdownEvent1 = new CountdownEvent( 3 );
+            using var countdownEvent2 = new CountdownEvent( 3 );
+
+            var testEvent1 = new TestEvent( countdownEvent1 );
+            var testEvent2 = new TestEvent( countdownEvent2 );
+
+            this.Uut.Start();
+            
+            // Act
+            this.Uut.ConfigureEvent( testEvent1 );
+            this.Uut.ConfigureEvent( testEvent2 );
+
+            // Check
+            WaitOnCountdownEvent( countdownEvent1 );
+            WaitOnCountdownEvent( countdownEvent2 );
+        }
+
         // ---------------- Test Helpers ----------------
 
         private static void WaitOnCountdownEvent( CountdownEvent e )
@@ -115,7 +153,10 @@ namespace Kakama.Tests.Api
                 await Task.Run(
                     () =>
                     {
-                        this.countdownEvent.Signal();
+                        if( this.countdownEvent.CurrentCount > 0 )
+                        {
+                            this.countdownEvent.Signal();
+                        }
                     }
                 );
             }

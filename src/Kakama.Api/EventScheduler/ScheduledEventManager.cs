@@ -77,9 +77,7 @@ namespace Kakama.Api.EventScheduler
 
         public int ConfigureEvent( ScheduledEvent e )
         {
-            string eventName = e.GetEventName();
-
-            ITrigger CreateTrigger()
+            ITrigger CreateTrigger( string eventName )
             {
                 var jobData = new JobDataMap
                 {
@@ -107,7 +105,10 @@ namespace Kakama.Api.EventScheduler
             if( e.Id == 0 )
             {
                 e.Id = this.events.Count + 1;
-                ITrigger trigger = CreateTrigger();
+
+                string eventName = e.GetEventName();
+
+                ITrigger trigger = CreateTrigger( eventName );
                 this.events[e.Id] = trigger;
                 this.taskScheduler.ScheduleJob( trigger );
             }
@@ -120,10 +121,12 @@ namespace Kakama.Api.EventScheduler
             }
             else
             {
+                string eventName = e.GetEventName();
+
                 ITrigger trigger = this.events[e.Id];
 
                 TriggerKey key = trigger.Key;
-                trigger = CreateTrigger();
+                trigger = CreateTrigger( eventName );
                 this.taskScheduler.RescheduleJob( key, trigger );
             }
 
