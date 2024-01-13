@@ -18,8 +18,10 @@
 
 using dotenv.net;
 using Kakama.Api;
+using Kakama.Api.Reporting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Mono.Options;
+using Prometheus;
 using Serilog;
 using Serilog.Sinks.Telegram;
 using Serilog.Sinks.Telegram.Alternative;
@@ -36,6 +38,11 @@ namespace Kakama.Web
         /// This is null until <see cref="Run"/> is called.
         /// </remarks>
         private Serilog.ILogger? log;
+
+        /// <remarks>
+        /// This is null until <see cref="Run"/> is called.
+        /// </remarks>
+        private KakamaMetrics? metrics;
 
         // ---------------- Constructor ----------------
 
@@ -126,12 +133,24 @@ namespace Kakama.Web
                 this.log?.Fatal( "FATAL ERROR:" + Environment.NewLine + e );
                 return -1;
             }
+            finally
+            {
+                this.metrics?.Dispose();
+            }
         }
 
         private void RunInternal()
         {
             WebConfig webConfig = WebConfigExtensions.FromEnvVar();
-            this.log = CreateLog( webConfig );
+
+            LogMessageCounter? logCounter = null;
+            if( webConfig.MetricsUrl is not null )
+            {
+                logCounter = new LogMessageCounter();
+                this.metrics = new KakamaMetrics( logCounter );
+            }
+
+            this.log = CreateLog( webConfig, logCounter );
 
             KakamaSettings settings = KakamaSettingsExtensions.FromEnvVar();
 
@@ -205,6 +224,21 @@ namespace Kakama.Web
             }
 
             app.UseRouting();
+            if( webConfig.MetricsUrl is not null )
+            {
+                // Per https://learn.microsoft.com/en-us/aspnet/core/diagnostics/asp0014?view=aspnetcore-8.0:
+                // Warnings from this rule can be suppressed if
+                // the target UseEndpoints invocation is invoked without
+                // any mappings as a strategy to organize middleware ordering.
+#pragma warning disable ASP0014 // Suggest using top level route registrations
+                app.UseEndpoints(
+                    endpoints =>
+                    {
+                        endpoints.MapMetrics( webConfig.MetricsUrl );
+                    }
+                );
+#pragma warning restore ASP0014 // Suggest using top level route registrations
+            }
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}"
@@ -213,10 +247,15 @@ namespace Kakama.Web
             app.Run();
         }
 
-        private Serilog.ILogger CreateLog( WebConfig webConfig )
+        private Serilog.ILogger CreateLog( WebConfig webConfig, LogMessageCounter? logCounter )
         {
             var logger = new LoggerConfiguration()
                 .WriteTo.Console( Serilog.Events.LogEventLevel.Information );
+
+            if( logCounter is not null )
+            {
+                logger = logger.WriteTo.Sink( logCounter );
+            }
 
             bool useFileLogger = false;
             bool useTelegramLogger = false;

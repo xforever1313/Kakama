@@ -16,6 +16,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using SethCS.Exceptions;
+
 namespace Kakama.Web
 {
     public record class WebConfig
@@ -45,6 +47,12 @@ namespace Kakama.Web
         public bool NamespacesMapToUrl { get; init; } = false;
 
         /// <summary>
+        /// The URL that prometheus metrics should be reported to.
+        /// Set to null to not report metrics at all.
+        /// </summary>
+        public string? MetricsUrl { get; init; } = null;
+
+        /// <summary>
         /// Where to log information or greater messages to.
         /// Leave null for no logging to files.
         /// </summary>
@@ -69,6 +77,14 @@ namespace Kakama.Web
 
             var settings = new WebConfig();
 
+            if( NotNull( "WEB_ALLOW_PORTS", out string allowPorts ) )
+            {
+                settings = settings with
+                {
+                    AllowPorts = bool.Parse( allowPorts )
+                };
+            }
+
             if( NotNull( "WEB_BASEPATH", out string basePath ) )
             {
                 settings = settings with
@@ -77,11 +93,11 @@ namespace Kakama.Web
                 };
             }
 
-            if( NotNull( "WEB_ALLOW_PORTS", out string allowPorts ) )
+            if( NotNull( "WEB_METRICS_URL", out string metricsUrl ) )
             {
                 settings = settings with
                 {
-                    AllowPorts = bool.Parse( allowPorts )
+                    MetricsUrl = metricsUrl
                 };
             }
 
@@ -109,6 +125,31 @@ namespace Kakama.Web
             }
 
             return settings;
+        }
+
+        public static void Validate( this WebConfig config )
+        {
+            var errors = new List<string>();
+
+            if( config.MetricsUrl is not null )
+            {
+                if( config.MetricsUrl.StartsWith( '/' ) == false )
+                {
+                    errors.Add( $"{nameof( config.MetricsUrl )} must start with a '/'." );
+                }
+                else if( config.MetricsUrl.Length <= 1 )
+                {
+                    errors.Add( $"{nameof( config.MetricsUrl )} must be 2 or greater characters.  Got: {config.MetricsUrl}" );
+                }
+            }
+
+            if( errors.Any() )
+            {
+                throw new ListedValidationException(
+                    $"Error when validating {nameof( WebConfig )}",
+                    errors
+                );
+            }
         }
     }
 }
