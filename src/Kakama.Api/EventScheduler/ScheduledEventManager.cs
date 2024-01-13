@@ -65,6 +65,8 @@ namespace Kakama.Api.EventScheduler
 
         private readonly IJobDetail job;
 
+        private int nextId;
+
         // ---------------- Constructor ----------------
 
         public ScheduledEventManager( IKakamaApi api )
@@ -94,6 +96,8 @@ namespace Kakama.Api.EventScheduler
                 .Build();
 
             this.taskScheduler.AddJob( this.job, false );
+
+            this.nextId = 1;
         }
 
         // ---------------- Properties ----------------
@@ -140,7 +144,8 @@ namespace Kakama.Api.EventScheduler
 
             if( e.Id == 0 )
             {
-                e.Id = this.events.Count + 1;
+                e.Id = nextId;
+                ++nextId;
 
                 string eventName = e.GetEventName();
 
