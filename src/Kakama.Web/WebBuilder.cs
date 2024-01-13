@@ -1,6 +1,6 @@
 ﻿//
 // Kakama - An ActivityPub Bot Framework
-// Copyright (C) 2023 Seth Hendrick
+// Copyright (C) 2023-2024 Seth Hendrick
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
