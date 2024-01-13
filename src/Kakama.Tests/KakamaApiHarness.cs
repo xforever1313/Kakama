@@ -41,7 +41,11 @@ namespace Kakama.Tests
                     // up between tests.
                     SqlitePoolConnection = false
                 },
-                new LoggerConfiguration().WriteTo.Console().CreateLogger()
+                new LoggerConfiguration().WriteTo.Console().CreateLogger(),
+
+                // Unit tests we do want to execute scheduled events in case
+                // they are under test.
+                true
             )
         {
         }

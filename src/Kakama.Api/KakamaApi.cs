@@ -48,6 +48,8 @@ namespace Kakama.Api
 
         protected readonly KakamaSettings settings;
 
+        protected readonly bool runScheduledEvents;
+
         private readonly ScheduledEventManager eventManager;
 
         private readonly IEnumerable<FileInfo> pluginPaths;
@@ -61,15 +63,21 @@ namespace Kakama.Api
 
         // ---------------- Constructor ----------------
 
-        public KakamaApi( KakamaSettings settings, ILogger log ) :
-            this( settings, log, Array.Empty<FileInfo>() )
+        public KakamaApi( KakamaSettings settings, ILogger log, bool runScheduledEvents ) :
+            this( settings, log, runScheduledEvents, Array.Empty<FileInfo>() )
         {
 
         }
 
-        public KakamaApi( KakamaSettings settings, ILogger log, IEnumerable<FileInfo> pluginPaths )
+        public KakamaApi(
+            KakamaSettings settings,
+            ILogger log,
+            bool runScheduledEvents,
+            IEnumerable<FileInfo> pluginPaths
+        )
         {
             this.settings = settings;
+            this.runScheduledEvents = runScheduledEvents;
             this.pluginPaths = pluginPaths;
             this.plugins = new List<IKakamaPlugin>();
 
@@ -125,7 +133,14 @@ namespace Kakama.Api
 
             LoadPlugins();
 
-            this.eventManager.Start();
+            if( this.runScheduledEvents )
+            {
+                this.eventManager.Start();
+            }
+            else
+            {
+                this.Log.Debug( "Scheduled events flagged to not run, not starting event scheduler." );
+            }
 
             this.inited = true;
         }

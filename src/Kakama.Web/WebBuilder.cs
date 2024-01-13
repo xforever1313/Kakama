@@ -135,7 +135,7 @@ namespace Kakama.Web
 
             KakamaSettings settings = KakamaSettingsExtensions.FromEnvVar();
 
-            using var api = new KakamaApi( settings, this.log, Array.Empty<FileInfo>() );
+            using var api = new KakamaApi( settings, this.log, true, Array.Empty<FileInfo>() );
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
             builder.Services.AddSingleton<IKakamaApi>( api );

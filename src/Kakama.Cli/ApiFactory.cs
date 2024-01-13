@@ -40,7 +40,10 @@ namespace Kakama.Cli
             }
 
             KakamaSettings settings = KakamaSettingsExtensions.FromEnvVar();
-            var api = new KakamaApi( settings, log, Array.Empty<FileInfo>() );
+            // For command-line, do not start scheduled events, as the CLI
+            // is only meant to talk directly to the database,
+            // not run any events.
+            var api = new KakamaApi( settings, log, false, Array.Empty<FileInfo>() );
 
             api.Init();
 
