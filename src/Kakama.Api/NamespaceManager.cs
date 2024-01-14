@@ -94,6 +94,16 @@ namespace Kakama.Api
             }
         }
 
+        public List<Namespace> GetNamespacesCompatibleWithUrl( Uri uri )
+        {
+            using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
+            {
+                return db.SafeGetNamespaces().Where(
+                    n => uri.Equals( n.BaseUrl )
+                ).ToList();
+            }
+        }
+
         public Namespace? TryGetNamespaceBySlug( string slug )
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )

@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Kakama ActivityPub Bot Framework - Namespace List";
+    ViewData["Description"] = "All namespaces on this URL.";
+    ViewData["keywords"] = "activity,bot,dotnet,namespace,pub,service";
+}
+
+@using Kakama.Api.Models;
+@model NamespaceModel;
+
+<h1>Available Bot Namespaces</h1>
+
+@if (Model.Namespaces.Any())
+{
+    <ul>
+        @foreach( Namespace ns in Model.Namespaces )
+        {
+            <li>
+                @if( ns.Slug is null )
+                {
+                    <strong>@ns.Name - Misconfigured, no slug defined.</strong>
+                }
+                else
+                {
+                    <a href="/@ns.Slug">@ns.Name</a>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No namespaces are available.</p>
+    <p>Please contact the administrator to add a new namespace.</p>
+}

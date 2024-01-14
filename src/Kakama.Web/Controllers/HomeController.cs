@@ -18,7 +18,9 @@
 
 using System.Diagnostics;
 using Kakama.Api;
+using Kakama.Api.Models;
 using Kakama.Web.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kakama.Web.Controllers
@@ -53,6 +55,18 @@ namespace Kakama.Web.Controllers
         public IActionResult Credits()
         {
             return View( new HomeModel( this.api ) );
+        }
+
+        [Route( "namespaces.html" )]
+        public async Task<IActionResult> Namespaces()
+        {
+            var uri = new Uri( $"{this.Request.Scheme}{Uri.SchemeDelimiter}{this.Request.Host}" );
+
+            List<Namespace> spaces = await Task.Run(
+                () => this.api.NamespaceManager.GetNamespacesCompatibleWithUrl( uri )
+            );
+
+            return View( new NamespaceModel( spaces ) );
         }
 
         public IActionResult Privacy()

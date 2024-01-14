@@ -244,6 +244,7 @@ namespace Kakama.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}"
             );
 
+            api.Init();
             app.Run();
         }
 
