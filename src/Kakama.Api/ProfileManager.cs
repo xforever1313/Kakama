@@ -212,6 +212,13 @@ namespace Kakama.Api
 
         public List<Profile> GetAllProfilesWithinNamespace( int namespaceId )
         {
+            if( this.api.NamespaceManager.NamespaceExists( namespaceId ) == false )
+            {
+                throw new NamespaceNotFoundException(
+                    $"Can not find namespace ID {namespaceId}"
+                );
+            }
+
             using KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection();
             return db.SafeGetProfiles().Where( p => p.NamespaceId == namespaceId ).ToList();
         }

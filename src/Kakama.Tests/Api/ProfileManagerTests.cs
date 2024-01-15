@@ -82,6 +82,45 @@ namespace Kakama.Tests.Api
         }
 
         [TestMethod]
+        public void ProfileDoesntExistWithNoNamespacesTest()
+        {
+            // Act
+            Assert.ThrowsException<NamespaceNotFoundException>(
+                () => this.Uut.ProfileManager.GetAllProfilesWithinNamespace( 1 )
+            );
+
+            // Check
+            Assert.AreEqual( 0, this.Uut.ProfileManager.GetNumberOfProfiles() );
+        }
+
+        [TestMethod]
+        public void ProfileDoesntExistWithEmptyNamespaceTest()
+        {
+            // Set
+            Namespace ns = AddTestNamespace();
+
+            // Act
+            List<Profile> profilesWithinNamespace = this.Uut.ProfileManager.GetAllProfilesWithinNamespace( ns.Id );
+            Assert.ThrowsException<ProfileNotFoundException>(
+                () => this.Uut.ProfileManager.GetMetaData( 1 )
+            );
+            Assert.ThrowsException<ProfileNotFoundException>(
+                () => this.Uut.ProfileManager.RegenerateKey( 1 )
+            );
+            Assert.ThrowsException<ProfileNotFoundException>(
+                () => this.Uut.ProfileManager.GetProfileById( 1 )
+            );
+            Assert.ThrowsException<ProfileNotFoundException>(
+                () => this.Uut.ProfileManager.GetProfileBySlug( ns.Id, "i-dont-exist" )
+            );
+
+            // Check
+            Assert.AreEqual( 0, profilesWithinNamespace.Count );
+            Assert.AreEqual( 0, this.Uut.ProfileManager.GetNumberOfProfiles() );
+            Assert.AreEqual( 0, this.Uut.ProfileManager.GetTotalNumberOfProfilesInNamespace( ns.Id ) );
+        }
+
+        [TestMethod]
         public void AddProfileWithNoSlugTest()
         {
             // Setup
