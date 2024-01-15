@@ -210,10 +210,10 @@ namespace Kakama.Api
             return id;
         }
 
-        public IEnumerable<Profile> GetAllProfilesWithinNamespace( int namespaceId )
+        public List<Profile> GetAllProfilesWithinNamespace( int namespaceId )
         {
             using KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection();
-            return db.SafeGetProfiles().Where( p => p.NamespaceId == namespaceId ).ToArray();
+            return db.SafeGetProfiles().Where( p => p.NamespaceId == namespaceId ).ToList();
         }
 
         public Profile? TryGetProfileBySlug( int namespaceId, string slug )

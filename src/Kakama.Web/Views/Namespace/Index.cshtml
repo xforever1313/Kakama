@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = $"@{Model.Namespace.Name} namespace.";
+    ViewData["Description"] = $"All profiles within the namespace @{Model.Namespace.Name}.";
+    ViewData["keywords"] = $"activity,bot,dotnet,namespace,profile,pub,service,@{Model.Namespace.Name}";
+}
+
+@using Kakama.Api.Models;
+@model ProfileListModel;
+
+<h1>Profiles within the @Model.Namespace.Name namespace</h1>
+
+@if (Model.Profiles.Any())
+{
+    <ul>
+        @foreach( Profile profile in Model.Profiles )
+        {
+            <li>
+                @if( profile.Slug is null )
+                {
+                    <strong>@profile.Name - Misconfigured, no slug defined.</strong>
+                }
+                else
+                {
+                    <a href="/@Model.Namespace.Slug/@profile.Slug">@profile.Name</a>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No profiles are available within this namespace.</p>
+    <p>Please contact the administrator to add a new profile.</p>
+}

@@ -17,6 +17,8 @@
 //
 
 using Kakama.Api;
+using Kakama.Api.Models;
+using Kakama.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kakama.Web.Controllers
@@ -35,5 +37,38 @@ namespace Kakama.Web.Controllers
         }
 
         // ---------------- Functions ----------------
+
+        [Route( "/namespace" )]
+        public async Task<IActionResult> Index( [FromRoute]string @namespace )
+        {
+            try
+            {
+                // If we get nothing, then we probably want
+                // a list of all the namespaces, redirect to that.
+                if( string.IsNullOrWhiteSpace( @namespace ) )
+                {
+                    Redirect( "/namespaces.html" );
+                }
+
+                Namespace? ns = await Task.Run(
+                    () => this.api.NamespaceManager.TryGetNamespaceBySlug( @namespace )
+                );
+
+                if ( ns is null )
+                {
+                    return NotFound( "Could not find specified namespace." );
+                }
+
+                List<Profile> profiles = await Task.Run(
+                    () => this.api.ProfileManager.GetAllProfilesWithinNamespace( ns.Id )
+                );
+
+                return View( new ProfileListModel( ns, profiles ) );
+            }
+            catch( NotFoundException e )
+            {
+                return NotFound( e.Message );
+            }
+        }
     }
 }

@@ -57,4 +57,5 @@ OpenCover/
 
 # Secrets
 .env
+test.env
 *.db
