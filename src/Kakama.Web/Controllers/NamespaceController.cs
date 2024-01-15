@@ -38,7 +38,7 @@ namespace Kakama.Web.Controllers
 
         // ---------------- Functions ----------------
 
-        [Route( "/namespace" )]
+        [Route( "/{namespace}" )]
         public async Task<IActionResult> Index( [FromRoute]string @namespace )
         {
             try

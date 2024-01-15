@@ -40,24 +40,25 @@ namespace Kakama.Web.Controllers
 
         // ---------------- Functions ----------------
 
+        [Route( "/" )]
         public IActionResult Index()
         {
             return View( new HomeModel( this.api ) );
         }
 
-        [Route( "license.html" )]
+        [Route( "/license.html" )]
         public IActionResult License()
         {
             return View( new HomeModel( this.api ) );
         }
 
-        [Route( "credits.html" )]
+        [Route( "/credits.html" )]
         public IActionResult Credits()
         {
             return View( new HomeModel( this.api ) );
         }
 
-        [Route( "namespaces.html" )]
+        [Route( "/namespaces.html" )]
         public async Task<IActionResult> Namespaces()
         {
             var uri = new Uri( $"{this.Request.Scheme}{Uri.SchemeDelimiter}{this.Request.Host}" );
