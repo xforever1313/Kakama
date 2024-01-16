@@ -36,25 +36,31 @@ namespace DevOps
             this.LooseFilesDistFolder = this.DistFolder.Combine( "files" );
             this.ZipFilesDistFolder = this.DistFolder.Combine( "zip" );
             this.TestResultsFolder = this.RepoRoot.Combine( "TestResults" );
+            this.CliCsProj = this.SrcDir.CombineWithFilePath( "Kakama.Cli/Kakama.Cli.csproj" );
+            this.WebCsProj = this.SrcDir.CombineWithFilePath( "Kakama.Web/Kakama.Web.csproj" );
             this.TestCsProj = this.SrcDir.CombineWithFilePath( "Kakama.Tests/Kakama.Tests.csproj" );
         }
 
         // ---------------- Properties ----------------
 
-        public DirectoryPath RepoRoot { get; private set; }
+        public DirectoryPath RepoRoot { get; }
 
-        public DirectoryPath SrcDir { get; private set; }
+        public DirectoryPath SrcDir { get; }
 
-        public FilePath Solution { get; private set; }
+        public FilePath Solution { get; }
 
-        public DirectoryPath DistFolder { get; private set; }
+        public DirectoryPath DistFolder { get; }
 
-        public DirectoryPath LooseFilesDistFolder { get; private set; }
+        public DirectoryPath LooseFilesDistFolder { get; }
 
-        public DirectoryPath TestResultsFolder { get; private set; }
+        public DirectoryPath TestResultsFolder { get; }
 
-        public DirectoryPath ZipFilesDistFolder { get; private set; }
+        public DirectoryPath ZipFilesDistFolder { get; }
 
-        public FilePath TestCsProj { get; private set; }
+        public FilePath CliCsProj { get; }
+
+        public FilePath WebCsProj { get; }
+
+        public FilePath TestCsProj { get; }
     }
 }

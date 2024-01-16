@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cake.ArgumentBinder" />
     <PackageReference Include="Cake.Frosting" />
   </ItemGroup>
 
