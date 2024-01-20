@@ -18,6 +18,7 @@
 
 using System.CommandLine;
 using Kakama.Cli.Commands.Namespace;
+using Kakama.Cli.Commands.Profile;
 
 namespace Kakama.Cli.Commands
 {
@@ -31,6 +32,8 @@ namespace Kakama.Cli.Commands
         // -------- Child Commands --------
 
         private readonly NamespaceCommand namespaceCommand;
+
+        private readonly ProfileCommand profileCommand;
 
         // ---------------- Constructor ----------------
 
@@ -49,6 +52,9 @@ namespace Kakama.Cli.Commands
 
             this.namespaceCommand = new NamespaceCommand( consoleOut, globalOptions );
             this.rootCommand.Add( this.namespaceCommand.RootCommand );
+
+            this.profileCommand = new ProfileCommand( consoleOut, globalOptions );
+            this.rootCommand.Add( this.profileCommand.RootCommand );
         }
 
         // ---------------- Functions ----------------
