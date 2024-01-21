@@ -17,34 +17,37 @@
 //
 
 using System.CommandLine;
+using Kakama.Api;
 
 namespace Kakama.Cli.Commands.Profile
 {
-    public sealed class ProfileCommand : IKakamaCommand
+    public sealed class ProfileListCommand : IKakamaCommand
     {
         // ---------------- Fields ----------------
 
         private readonly TextWriter consoleOut;
 
-        // -------- Sub Commands --------
-
-        private readonly ProfileAddCommand profileAddCommand;
-
-        private readonly ProfileListCommand profileListCommand;
-
         // ---------------- Constructor ----------------
 
-        public ProfileCommand( TextWriter consoleOut, GlobalOptions globalOptions )
+        public ProfileListCommand( TextWriter consoleOut, GlobalOptions globalOptions )
         {
             this.consoleOut = consoleOut;
-            this.RootCommand = new Command( "profile", "Manage Profiles" );
-            this.RootCommand.SetHandler( this.Handler );
+            this.RootCommand = new Command( "list", "Lists all of the profiles." );
 
-            this.profileAddCommand = new ProfileAddCommand( consoleOut, globalOptions );
-            this.RootCommand.Add( this.profileAddCommand.RootCommand );
+            var namespaceIdArgument = new Option<int>(
+                "--namespace_id",
+                "The ID of the namespace to list the profiles of."
+            )
+            {
+                IsRequired = true
+            };
+            this.RootCommand.Add( namespaceIdArgument );
 
-            this.profileListCommand = new ProfileListCommand( consoleOut, globalOptions );
-            this.RootCommand.AddCommand( this.profileListCommand.RootCommand );
+            this.RootCommand.SetHandler( 
+                this.Handler,
+                globalOptions.EnvFileOption,
+                namespaceIdArgument
+            );
         }
 
         // ---------------- Properties ----------------
@@ -53,12 +56,13 @@ namespace Kakama.Cli.Commands.Profile
 
         // ---------------- Functions ----------------
 
-        private void Handler()
+        private void Handler( string envFileLocation, int namespaceId )
         {
-            this.consoleOut.WriteLine( $"Please specify a sub-command for {this.RootCommand.Name}.  Valid sub-commands are:" );
-            foreach( var subCommand in this.RootCommand.Subcommands )
+            using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
+
+            foreach( Api.Models.Profile profile in api.ProfileManager.GetAllProfilesWithinNamespace( namespaceId ) )
             {
-                this.consoleOut.WriteLine( $"- {subCommand.Name}" );
+                this.consoleOut.WriteLine( profile );
             }
         }
     }
