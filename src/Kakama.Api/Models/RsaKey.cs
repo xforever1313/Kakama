@@ -19,6 +19,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using SethCS.Exceptions;
+using SethCS.Extensions;
 
 namespace Kakama.Api.Models
 {
@@ -73,6 +74,11 @@ namespace Kakama.Api.Models
             this.PrivateKeyPem = rsa.ExportPkcs8PrivateKeyPem();
 
             return this;
+        }
+
+        public string GetPublicKeyOnOneLine()
+        {
+            return this.PublicKeyPem.NormalizeWhiteSpace();
         }
     }
 

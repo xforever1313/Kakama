@@ -18,6 +18,7 @@
 
 using System.CommandLine;
 using Kakama.Api;
+using Kakama.Api.Models;
 
 namespace Kakama.Cli.Commands.Profile
 {
@@ -53,11 +54,22 @@ namespace Kakama.Cli.Commands.Profile
             };
             this.RootCommand.Add( printMetaDataArgument );
 
+            var printPublicKeyArg = new Option<bool>(
+                "--print_public_key",
+                () => false,
+                "Include the profile's public key when printing."
+            )
+            {
+                IsRequired = false
+            };
+            this.RootCommand.Add( printPublicKeyArg );
+
             this.RootCommand.SetHandler( 
                 this.Handler,
                 globalOptions.EnvFileOption,
                 namespaceIdArgument,
-                printMetaDataArgument
+                printMetaDataArgument,
+                printPublicKeyArg
             );
         }
 
@@ -67,7 +79,7 @@ namespace Kakama.Cli.Commands.Profile
 
         // ---------------- Functions ----------------
 
-        private void Handler( string envFileLocation, int namespaceId, bool printMetaData )
+        private void Handler( string envFileLocation, int namespaceId, bool printMetaData, bool printPublicKey )
         {
             using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
 
@@ -76,10 +88,15 @@ namespace Kakama.Cli.Commands.Profile
                 this.consoleOut.WriteLine( profile );
                 if( printMetaData )
                 {
-                    foreach( Api.Models.ProfileMetaData metaData in api.ProfileManager.GetMetaData( profile.Id ) )
+                    foreach( ProfileMetaData metaData in api.ProfileManager.GetMetaData( profile.Id ) )
                     {
                         this.consoleOut.WriteLine( $"    {metaData}" );
                     }
+                }
+                if( printPublicKey )
+                {
+                    RsaKey key = api.ProfileManager.GetRsaKey( profile.Id );
+                    this.consoleOut.WriteLine( $"    Public Key: {key.GetPublicKeyOnOneLine()}" );
                 }
             }
         }

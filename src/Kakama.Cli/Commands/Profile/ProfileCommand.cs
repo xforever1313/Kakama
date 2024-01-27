@@ -34,6 +34,8 @@ namespace Kakama.Cli.Commands.Profile
 
         private readonly ProfileListCommand profileListCommand;
 
+        private readonly ProfileRekeyCommand rekeyCommand;
+
         // ---------------- Constructor ----------------
 
         public ProfileCommand( TextWriter consoleOut, GlobalOptions globalOptions )
@@ -50,6 +52,9 @@ namespace Kakama.Cli.Commands.Profile
 
             this.profileListCommand = new ProfileListCommand( consoleOut, globalOptions );
             this.RootCommand.AddCommand( this.profileListCommand.RootCommand );
+
+            this.rekeyCommand = new ProfileRekeyCommand( consoleOut, globalOptions );
+            this.RootCommand.AddCommand( this.rekeyCommand.RootCommand );
         }
 
         // ---------------- Properties ----------------
