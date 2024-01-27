@@ -43,10 +43,21 @@ namespace Kakama.Cli.Commands.Profile
             };
             this.RootCommand.Add( namespaceIdArgument );
 
+            var printMetaDataArgument = new Option<bool>(
+                "--print_metadata",
+                () => false,
+                "Include the profile's metadata when printing."
+            )
+            {
+                IsRequired = false
+            };
+            this.RootCommand.Add( printMetaDataArgument );
+
             this.RootCommand.SetHandler( 
                 this.Handler,
                 globalOptions.EnvFileOption,
-                namespaceIdArgument
+                namespaceIdArgument,
+                printMetaDataArgument
             );
         }
 
@@ -56,13 +67,20 @@ namespace Kakama.Cli.Commands.Profile
 
         // ---------------- Functions ----------------
 
-        private void Handler( string envFileLocation, int namespaceId )
+        private void Handler( string envFileLocation, int namespaceId, bool printMetaData )
         {
             using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
 
             foreach( Api.Models.Profile profile in api.ProfileManager.GetAllProfilesWithinNamespace( namespaceId ) )
             {
                 this.consoleOut.WriteLine( profile );
+                if( printMetaData )
+                {
+                    foreach( Api.Models.ProfileMetaData metaData in api.ProfileManager.GetMetaData( profile.Id ) )
+                    {
+                        this.consoleOut.WriteLine( $"    {metaData}" );
+                    }
+                }
             }
         }
     }

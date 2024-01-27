@@ -44,7 +44,13 @@ namespace DevOps.Staging
             var commands = new string[]
             {
                 "namespace add --name=\"Empty Namespace\" --slug=\"some-empty-namespace\"",
-                "namespace add --name=\"Default Namespace\""
+
+                "namespace add --name=\"Default Namespace\"",
+                "profile add --namespace_id=2 --name=\"Seth Hendrick\" --slug=shendrick13 --description=\"This is me!\" --image_url=https://shendrick.net/static/img/me.jpg",
+                "profile add_metadata --profile_id=1 --name=Pronouns --value=he/him/his --explicit_order=1",
+                "profile add_metadata --profile_id=1 --name=Website --value=https://shendrick.net --explicit_order=0",
+
+                "profile add --namespace_id=2 --name=\"Chester Hendrick\" --description=\"Seth's old dog #RIP\"",
             };
 
             foreach( string command in commands )

@@ -30,6 +30,8 @@ namespace Kakama.Cli.Commands.Profile
 
         private readonly ProfileAddCommand profileAddCommand;
 
+        private readonly ProfileMetadataAddCommand metadataAddCommand;
+
         private readonly ProfileListCommand profileListCommand;
 
         // ---------------- Constructor ----------------
@@ -42,6 +44,9 @@ namespace Kakama.Cli.Commands.Profile
 
             this.profileAddCommand = new ProfileAddCommand( consoleOut, globalOptions );
             this.RootCommand.Add( this.profileAddCommand.RootCommand );
+
+            this.metadataAddCommand = new ProfileMetadataAddCommand( consoleOut, globalOptions );
+            this.RootCommand.Add( this.metadataAddCommand.RootCommand );
 
             this.profileListCommand = new ProfileListCommand( consoleOut, globalOptions );
             this.RootCommand.AddCommand( this.profileListCommand.RootCommand );
