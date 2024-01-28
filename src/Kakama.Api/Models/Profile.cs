@@ -123,9 +123,9 @@ namespace Kakama.Api.Models
         public Uri? ImageUrl { get; set; } = null;
     }
 
-    internal static class ProfileExtensions
+    public static class ProfileExtensions
     {
-        public static void Validate( this Profile profile )
+        internal static void Validate( this Profile profile )
         {
             var errors = new List<string>();
 
@@ -155,7 +155,7 @@ namespace Kakama.Api.Models
             }
         }
 
-        public static Service ToActivityPubJason(
+        public static Service ToActivityPubJson(
             this Profile profile,
             Namespace ns,
             RsaKey rsaKey,
