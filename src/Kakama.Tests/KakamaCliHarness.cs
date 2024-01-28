@@ -27,7 +27,7 @@ namespace Kakama.Tests
 
         public KakamaCliHarness( string dbFileName, string dotEnvFileName )
         {
-            this.ApiHarness = new KakamaApiHarness( dbFileName );
+            this.ApiHarness = KakamaApiHarness.Create( dbFileName );
             this.DotEnvFileLocation = new FileInfo(
                 Path.Combine(
                     Path.GetDirectoryName( typeof( KakamaCliHarness ).Assembly.Location ) ?? "",

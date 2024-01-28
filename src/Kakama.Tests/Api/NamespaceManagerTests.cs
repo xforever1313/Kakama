@@ -35,7 +35,7 @@ namespace Kakama.Tests.Api
         [TestInitialize]
         public void TestSetup()
         {
-            this.uut = new KakamaApiHarness( "namespacetests.db" );
+            this.uut = KakamaApiHarness.Create( "namespacetests.db" );
             this.uut.PerformTestSetup();
         }
 

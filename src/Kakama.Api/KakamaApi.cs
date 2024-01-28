@@ -34,6 +34,8 @@ namespace Kakama.Api
 
         IScheduledEventManager EventManager { get; }
 
+        IDateTimeFactory DateTimeFactory { get; }
+
         string Version { get; }
 
         // ---------------- Functions ----------------
@@ -74,6 +76,16 @@ namespace Kakama.Api
             ILogger log,
             bool runScheduledEvents,
             IEnumerable<FileInfo> pluginPaths
+        ) : this( settings, log, runScheduledEvents, pluginPaths, new DateTimeFactory() )
+        {
+        }
+
+        public KakamaApi(
+            KakamaSettings settings,
+            ILogger log,
+            bool runScheduledEvents,
+            IEnumerable<FileInfo> pluginPaths,
+            IDateTimeFactory dateTimeFactory
         )
         {
             this.settings = settings;
@@ -99,6 +111,7 @@ namespace Kakama.Api
             this.NamespaceManager = new NamespaceManager( this );
             this.ProfileManager = new ProfileManager( this );
             this.eventManager = new ScheduledEventManager( this );
+            this.DateTimeFactory = dateTimeFactory;
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             this.inited = false;
@@ -114,6 +127,8 @@ namespace Kakama.Api
         public ProfileManager ProfileManager { get; }
 
         public IScheduledEventManager EventManager => this.eventManager;
+
+        public IDateTimeFactory DateTimeFactory { get; }
 
         public string Version { get; }
 

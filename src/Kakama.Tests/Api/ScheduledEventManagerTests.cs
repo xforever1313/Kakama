@@ -16,10 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Api;
 using Kakama.Api.EventScheduler;
-using Moq;
-using Serilog;
 
 namespace Kakama.Tests.Api
 {
@@ -38,7 +35,7 @@ namespace Kakama.Tests.Api
         [TestInitialize]
         public void TestSetup()
         {
-            this.api = new KakamaApiHarness( "scheduleTest" );
+            this.api = KakamaApiHarness.Create( "scheduleTest" );
             this.api.PerformTestSetup();
 
             this.uut = this.api.EventManager;

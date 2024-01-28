@@ -104,6 +104,11 @@ namespace Kakama.Api
                     profile.RsaKeyId = newKey.Id;
                 }
 
+                if( profile.Id == 0 )
+                {
+                    profile.CreationTime = this.api.DateTimeFactory.UtcNow;
+                }
+
                 profiles.Update( profile );
                 db.SaveChanges();
 

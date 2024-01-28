@@ -17,6 +17,7 @@
 //
 
 using Kakama.Api;
+using Moq;
 using Serilog;
 
 namespace Kakama.Tests
@@ -25,7 +26,15 @@ namespace Kakama.Tests
     {
         // ---------------- Constructor ----------------
 
-        public KakamaApiHarness( string dbFileName ) :
+        public static KakamaApiHarness Create( string dbFileName )
+        {
+            return new KakamaApiHarness(
+                dbFileName,
+                new Mock<IDateTimeFactory>( MockBehavior.Strict )
+            );
+        }
+
+        private KakamaApiHarness( string dbFileName, Mock<IDateTimeFactory> mockDateTime ) :
             base(
                 new KakamaSettings
                 {
@@ -45,14 +54,19 @@ namespace Kakama.Tests
 
                 // Unit tests we do want to execute scheduled events in case
                 // they are under test.
-                true
+                true,
+                Array.Empty<FileInfo>(),
+                mockDateTime.Object
             )
         {
+            this.MockDateTimeFactory = mockDateTime;
         }
 
         // ---------------- Properties ----------------
 
         public FileInfo DbFileLocation => this.settings.SqliteDatabaseLocation;
+
+        public Mock<IDateTimeFactory> MockDateTimeFactory { get; }
 
         // ---------------- Functions ----------------
 

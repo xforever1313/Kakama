@@ -18,7 +18,6 @@
 
 using Kakama.Api;
 using Kakama.Api.Models;
-using SethCS.Exceptions;
 
 namespace Kakama.Tests.Api
 {
@@ -30,12 +29,18 @@ namespace Kakama.Tests.Api
 
         private KakamaApiHarness? uut;
 
+        private static readonly DateTime defaultCreatedAt = new DateTime( 2024, 1, 28, 16, 54, 0, DateTimeKind.Utc );
+
         // ---------------- Setup / Teardown ----------------
 
         [TestInitialize]
         public void TestSetup()
         {
-            this.uut = new KakamaApiHarness( "profiletests.db" );
+            this.uut = KakamaApiHarness.Create( "profiletests.db" );
+            this.uut.MockDateTimeFactory.Setup(
+                m => m.UtcNow
+            ).Returns( defaultCreatedAt );
+
             this.uut.PerformTestSetup();
         }
 
@@ -137,7 +142,8 @@ namespace Kakama.Tests.Api
                 RsaKeyId = 1,
 
                 // Slug should auto-generate is null by default.
-                Slug = "my-profile"
+                Slug = "my-profile",
+                CreationTime = defaultCreatedAt
             };
 
             // Act
@@ -176,7 +182,8 @@ namespace Kakama.Tests.Api
             var expectedProfile = profile with
             {
                 Id = 1,
-                RsaKeyId = 1
+                RsaKeyId = 1,
+                CreationTime = defaultCreatedAt
             };
 
             // Act

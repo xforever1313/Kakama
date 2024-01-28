@@ -34,6 +34,12 @@ namespace Kakama.Api.Models
     /// </summary>
     public record class Profile
     {
+        // ---------------- Fields ----------------
+
+        internal static readonly DateTime DefaultCreationDateTime = new DateTime( 1900, 1, 1, 0, 0, 0, DateTimeKind.Utc );
+
+        // ---------------- Properties ----------------
+
         /// <summary>
         /// The profile ID.  If set to the default,
         /// then a new profile is added.  Otherwise,
@@ -42,6 +48,24 @@ namespace Kakama.Api.Models
         [Key]
         [Required]
         public int Id { get; internal set; }
+
+        /// <summary>
+        /// The time this profile was created.
+        /// If <see cref="Id"/> is set to the default value
+        /// (where we expect the profile to be new),
+        /// then will be set to <see cref="DateTime.UtcNow"/>
+        /// when passed into <see cref="ProfileManager.ConfigureProfile(Profile)"/>.
+        /// Otherwise, this will be left alone.
+        /// </summary>
+        /// <remarks>
+        /// Use UTC when saving stuff to the database,
+        /// present local time to the client-facing stuff.
+        /// 
+        /// Default this to 1900, we're just going to override it to the current
+        /// time when its created anyways.
+        /// </remarks>
+        [Required]
+        public DateTime CreationTime { get; internal set; } = DefaultCreationDateTime;
 
         /// <summary>
         /// The namespace this profile is a part of.
@@ -316,7 +340,7 @@ namespace Kakama.Api.Models
                     profile.Name
                 },
                 Summary = summary,
-                Published = DateTime.Now, // TODO: Not this.
+                Published = profile.CreationTime,
                 Icon = icon,
                 Attachment = metadata,
                 ExtensionData = extensionData
