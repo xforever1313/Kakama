@@ -53,22 +53,22 @@ namespace Kakama.Cli.Commands.Namespace
             };
             this.RootCommand.Add( slugArgument );
 
-            var baseUrlArgument = new Option<Uri?>(
+            var baseUriArgument = new Option<Uri?>(
                 "--base_uri",
                 () => null,
-                "Specify to limit the namespace to a specific URL.  Only used when the service is meant to serve multiple URLs at once."
+                "Specify to limit the namespace to a specific URI.  Only used when the service is meant to serve multiple URIs at once."
             )
             {
                 IsRequired = false
             };
-            this.RootCommand.Add( baseUrlArgument );
+            this.RootCommand.Add( baseUriArgument );
 
             this.RootCommand.SetHandler(
                 this.Handler,
                 globalOptions.EnvFileOption,
                 nameArgument,
                 slugArgument,
-                baseUrlArgument
+                baseUriArgument
             );
         }
 
@@ -78,11 +78,11 @@ namespace Kakama.Cli.Commands.Namespace
 
         // ---------------- Functions ----------------
 
-        private void Handler( string envFileLocation, string name, string? slug, Uri? baseUrl )
+        private void Handler( string envFileLocation, string name, string? slug, Uri? baseUri )
         {
             var ns = new Api.Models.Namespace
             {
-                BaseUrl = baseUrl,
+                BaseUri = baseUri,
                 Name = name,
                 Slug = slug
             };

@@ -22,27 +22,27 @@ namespace Kakama.Web.Controllers
 {
     internal static class ControllerExtensions
     {
-        public static bool IsRequestUrlCompatible(
+        public static bool IsRequestUriCompatible(
             this Controller controller,
-            Uri expectedUrl
+            Uri expectedUri
         )
         {
-            return IsRequestUrlCompatible( controller.Request.Host, expectedUrl );
+            return IsRequestUrlCompatible( controller.Request.Host, expectedUri );
         }
 
         public static bool IsRequestUrlCompatible(
             HostString hostString,
-            Uri expectedUrl
+            Uri expectedUri
         )
         {
             HostString expectedHost;
-            if( expectedUrl.IsDefaultPort )
+            if( expectedUri.IsDefaultPort )
             {
-                expectedHost = new HostString( expectedUrl.Host );
+                expectedHost = new HostString( expectedUri.Host );
             }
             else
             {
-                expectedHost = new HostString( expectedUrl.Host, expectedUrl.Port );
+                expectedHost = new HostString( expectedUri.Host, expectedUri.Port );
             }
 
             return expectedHost.Equals( hostString );

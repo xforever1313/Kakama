@@ -69,7 +69,7 @@ namespace Kakama.Web.Controllers
                     profileModel.Namespace,
                     profileModel.RsaKey,
                     profileModel.ProfileMetaData,
-                    profileModel.BaseUrl.ToString()
+                    profileModel.BaseUrl
                 );
 
                 return Json( service );
@@ -87,7 +87,7 @@ namespace Kakama.Web.Controllers
             );
 
             Uri baseUri = this.webConfig.GetExpectedBaseUri( ns );
-            if( this.IsRequestUrlCompatible( baseUri ) == false )
+            if( this.IsRequestUriCompatible( baseUri ) == false )
             {
                 // We'll treat this as a 404, since the namespace _technically_
                 // doesn't exist on this URL.

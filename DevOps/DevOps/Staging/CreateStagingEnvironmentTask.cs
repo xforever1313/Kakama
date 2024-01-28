@@ -46,11 +46,16 @@ namespace DevOps.Staging
                 "namespace add --name=\"Empty Namespace\" --slug=\"some-empty-namespace\"",
 
                 "namespace add --name=\"Default Namespace\"",
+
                 "profile add --namespace_id=2 --name=\"Seth Hendrick\" --slug=shendrick13 --description=\"This is me!\" --image_url=https://shendrick.net/static/img/me.jpg",
                 "profile add_metadata --profile_id=1 --name=Pronouns --value=he/him/his --explicit_order=1",
                 "profile add_metadata --profile_id=1 --name=Website --value=https://shendrick.net --explicit_order=0",
 
                 "profile add --namespace_id=2 --name=\"Chester Hendrick\" --description=\"Seth's old dog #RIP\"",
+
+                "namespace add --name=\"Clock Bots\" --slug=clocks --base_uri=http://127.0.0.1:9913",
+
+                "profile add --namespace_id=3 --name=\"HVCC Clock\" --description=\"HVCC Clock Tower!\"",
             };
 
             foreach( string command in commands )
@@ -67,7 +72,7 @@ namespace DevOps.Staging
                 "WEB_ALLOW_PORTS=true",
                 "WEB_METRICS_URL=/Metrics",
                 "WEB_STRIP_DOUBLE_SLASH=false",
-                "WEB_BASE_URL=http://localhost:9913",
+                "WEB_BASE_URI=http://localhost:9913",
                 "DATABASE_ENGINE=Sqlite",
                 $"DATABASE_SQLITE_FILE={config.DbFile}",
                 "DATABASE_SQLITE_POOL_CONNECTION=true"

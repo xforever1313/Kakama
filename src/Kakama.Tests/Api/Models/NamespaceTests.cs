@@ -32,7 +32,7 @@ namespace Kakama.Tests.Api.Models
             var uut = new Namespace
             {
                 Id = 0,
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever1313",
                 Slug = "xforever_1313"
             };
@@ -43,7 +43,7 @@ namespace Kakama.Tests.Api.Models
             uut = backup with { };
 
             // Null URL is fine.
-            uut.BaseUrl = null;
+            uut.BaseUri = null;
             uut.Validate();
             uut = backup with { };
 

@@ -186,7 +186,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
 
             Kakama.Api.Models.Namespace expectedNs = startingNs with
             {
-                BaseUrl = new Uri( "https://troop53stories.shendrick.net" )
+                BaseUri = new Uri( "https://troop53stories.shendrick.net" )
             };
 
             // Act
@@ -215,7 +215,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
 
             Kakama.Api.Models.Namespace expectedNs = startingNs with
             {
-                BaseUrl = null
+                BaseUri = null
             };
 
             // Act
@@ -235,7 +235,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             var startingNs = new Kakama.Api.Models.Namespace
             {
                 Id = 0,
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "My Namespace",
                 Slug = "some-slug"
             };

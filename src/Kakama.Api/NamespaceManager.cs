@@ -99,7 +99,7 @@ namespace Kakama.Api
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
             {
                 return db.SafeGetNamespaces().Where(
-                    n => ( n.BaseUrl == null ) || uri.Equals( n.BaseUrl )
+                    n => ( n.BaseUri == null ) || uri.Equals( n.BaseUri )
                 ).ToList();
             }
         }

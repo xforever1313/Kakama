@@ -52,20 +52,21 @@ namespace Kakama.Api.Models
 
         /// <summary>
         /// If this is set to null, then the namespace
-        /// is not limited to a specific URL.  Therefore,
+        /// is not limited to a specific URI.  Therefore,
         /// and URL that points to this service can return
         /// a namespace when requested.
         /// 
         /// However, if this is set, the namespace is tied
-        /// to a specific URL, and therefore it can not be returned
-        /// if the requested URL does not match this.
+        /// to a specific URI, and therefore it can not be returned
+        /// if the requested URI does not match this.
         /// 
         /// This is really meant to be used when this is used as a monolith
         /// service serving multiple URLs at once.
         /// 
-        /// When in doubt, leave this null.
+        /// When in doubt, leave this null; but make sure
+        /// the base web config is set to something if that's the case.
         /// </summary>
-        public Uri? BaseUrl { get; set; } = null;
+        public Uri? BaseUri { get; set; } = null;
     }
 
     internal static class NamespaceExtensions

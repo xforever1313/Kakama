@@ -62,7 +62,7 @@ namespace Kakama.Web.Controllers
                 }
 
                 Uri targetUri = this.webConfig.GetExpectedBaseUri( ns );
-                if( this.IsRequestUrlCompatible( targetUri ) == false )
+                if( this.IsRequestUriCompatible( targetUri ) == false )
                 {
                     // We'll treat this as a 404, since the namespace _technically_
                     // doesn't exist on this URL.

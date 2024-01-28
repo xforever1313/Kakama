@@ -69,7 +69,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             var expectedNs = new Kakama.Api.Models.Namespace
             {
                 Id = 1,
-                BaseUrl = null,
+                BaseUri = null,
                 Name = expectedName,
                 Slug = "my-name"
             };
@@ -105,7 +105,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             var expectedNs = new Kakama.Api.Models.Namespace
             {
                 Id = 1,
-                BaseUrl = expectedBaseUri,
+                BaseUri = expectedBaseUri,
                 Name = expectedName,
                 Slug = expectedSlug
             };

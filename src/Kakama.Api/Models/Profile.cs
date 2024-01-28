@@ -160,7 +160,7 @@ namespace Kakama.Api.Models
             Namespace ns,
             RsaKey rsaKey,
             IEnumerable<ProfileMetaData> profileMetaData,
-            string baseSiteUrl
+            Uri baseSiteUri
         )
         {
             if( profile.Slug is null )
@@ -204,7 +204,9 @@ namespace Kakama.Api.Models
             // (e.g. the json files).
             // index.html under the profile folder will be the human-readable
             // section of the profile.
-            string profileFolderUrl = $"{baseSiteUrl}/{ns.Slug}/{profile.Slug}";
+            //
+            // Uri type's ToString includes a '/' at the end, no need to include it.
+            string profileFolderUrl = $"{baseSiteUri}{ns.Slug}/{profile.Slug}";
 
             // Activity Pub URLs
             string profileJsonUrl = $"{profileFolderUrl}/profile.json";

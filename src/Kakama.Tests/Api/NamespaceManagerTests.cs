@@ -64,7 +64,7 @@ namespace Kakama.Tests.Api
             // Setup
             var ns = new Namespace
             {
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever1313",
                 Slug = null
             };
@@ -94,7 +94,7 @@ namespace Kakama.Tests.Api
             // Setup
             var ns = new Namespace
             {
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever 1313",
                 Slug = null
             };
@@ -124,7 +124,7 @@ namespace Kakama.Tests.Api
             // Setup
             var ns1 = new Namespace
             {
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever1313",
                 Slug = null
             };
@@ -182,7 +182,7 @@ namespace Kakama.Tests.Api
             // Setup
             var ns = new Namespace
             {
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever1313",
                 Slug = null
             };
@@ -191,7 +191,7 @@ namespace Kakama.Tests.Api
 
             ns = ns with
             {
-                BaseUrl = null,
+                BaseUri = null,
                 Name = "shendrick",
                 Slug = "someslug"
             };
@@ -222,7 +222,7 @@ namespace Kakama.Tests.Api
             // Setup
             var ns = new Namespace
             {
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever1313",
                 Slug = "someslug"
             };
@@ -231,7 +231,7 @@ namespace Kakama.Tests.Api
 
             ns = ns with
             {
-                BaseUrl = null
+                BaseUri = null
             };
 
             Namespace expectedNs = ns with { };
@@ -294,7 +294,7 @@ namespace Kakama.Tests.Api
             // Setup
             var ns1 = new Namespace
             {
-                BaseUrl = new Uri( "https://shendrick.net" ),
+                BaseUri = new Uri( "https://shendrick.net" ),
                 Name = "xforever1313",
                 Slug = "xforever1313"
             };

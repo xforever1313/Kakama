@@ -73,7 +73,7 @@ namespace Kakama.Cli.Commands.Namespace
             };
             this.RootCommand.Add( slugArgument );
 
-            var baseUrlArgument = new Option<string?>(
+            var baseUriArgument = new Option<string?>(
                 "--base_uri",
                 () => null,
                 $"The new base uri.  Setting to '{clearString}' makes this null in the database."
@@ -81,7 +81,7 @@ namespace Kakama.Cli.Commands.Namespace
             {
                 IsRequired = false
             };
-            this.RootCommand.Add( baseUrlArgument );
+            this.RootCommand.Add( baseUriArgument );
 
             this.RootCommand.SetHandler(
                 this.Handler,
@@ -89,7 +89,7 @@ namespace Kakama.Cli.Commands.Namespace
                 idArgument,
                 nameArgument,
                 slugArgument,
-                baseUrlArgument
+                baseUriArgument
             );
         }
 
@@ -104,7 +104,7 @@ namespace Kakama.Cli.Commands.Namespace
             int id,
             string? newName,
             string? slug,
-            string? baseUrl
+            string? baseUri
         )
         {
             using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
@@ -127,15 +127,15 @@ namespace Kakama.Cli.Commands.Namespace
                 }
             }
 
-            if( baseUrl is not null )
+            if( baseUri is not null )
             {
-                if( baseUrl == clearString )
+                if( baseUri == clearString )
                 {
-                    ns = ns with { BaseUrl = null };
+                    ns = ns with { BaseUri = null };
                 }
                 else
                 {
-                    ns = ns with { BaseUrl = new Uri( baseUrl ) };
+                    ns = ns with { BaseUri = new Uri( baseUri ) };
                 }
             }
 

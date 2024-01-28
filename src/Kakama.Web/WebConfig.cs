@@ -32,7 +32,7 @@ namespace Kakama.Web
         public string BasePath { get; init; } = "";
 
         /// <summary>
-        /// If <see cref="Api.Models.Namespace.BaseUrl"/> is set to null,
+        /// If <see cref="Api.Models.Namespace.BaseUri"/> is set to null,
         /// this is used instead.
         /// 
         /// This should be set to your front-facing URL
@@ -41,7 +41,7 @@ namespace Kakama.Web
         /// This _is_ allowed to be null, but it means that all namespaces must have
         /// their base URL set.
         /// </summary>
-        public Uri? DefaultBaseUrl { get; init; } = null;
+        public Uri? DefaultBaseUri { get; init; } = null;
 
         /// <summary>
         /// If the given request has a port in
@@ -106,11 +106,11 @@ namespace Kakama.Web
                 };
             }
 
-            if( NotNull( "WEB_BASE_URL", out string baseUrl ) )
+            if( NotNull( "WEB_BASE_URI", out string baseUrl ) )
             {
                 settings = settings with
                 {
-                    DefaultBaseUrl = new Uri( baseUrl )
+                    DefaultBaseUri = new Uri( baseUrl )
                 };
             }
 
@@ -177,17 +177,17 @@ namespace Kakama.Web
         {
             // Target namespace's URL has priority, return that
             // if its set.
-            if( targetNamespace.BaseUrl is not null )
+            if( targetNamespace.BaseUri is not null )
             {
-                return targetNamespace.BaseUrl;
+                return targetNamespace.BaseUri;
             }
             // Otherwise, fallback to the website default, assuming its specified.
             else if(
-                ( targetNamespace.BaseUrl is null ) &&
-                ( webConfig.DefaultBaseUrl is not null )
+                ( targetNamespace.BaseUri is null ) &&
+                ( webConfig.DefaultBaseUri is not null )
             )
             {
-                return webConfig.DefaultBaseUrl;
+                return webConfig.DefaultBaseUri;
             }
             // If both are not specified, that's a configuration problem
             // the site admin needs to handle.
