@@ -28,12 +28,14 @@ namespace Kakama.Web.Controllers
         // ---------------- Fields ----------------
 
         private readonly IKakamaApi api;
+        private readonly WebConfig webConfig;
 
         // ---------------- Constructor ----------------
 
-        public NamespaceController( IKakamaApi api )
+        public NamespaceController( IKakamaApi api, WebConfig webConfig )
         {
             this.api = api;
+            this.webConfig = webConfig;
         }
 
         // ---------------- Functions ----------------
@@ -56,6 +58,14 @@ namespace Kakama.Web.Controllers
 
                 if ( ns is null )
                 {
+                    return NotFound( "Could not find specified namespace." );
+                }
+
+                Uri targetUri = this.webConfig.GetExpectedBaseUri( ns );
+                if( this.IsRequestUrlCompatible( targetUri ) == false )
+                {
+                    // We'll treat this as a 404, since the namespace _technically_
+                    // doesn't exist on this URL.
                     return NotFound( "Could not find specified namespace." );
                 }
 

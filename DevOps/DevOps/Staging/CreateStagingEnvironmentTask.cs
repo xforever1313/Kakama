@@ -67,6 +67,7 @@ namespace DevOps.Staging
                 "WEB_ALLOW_PORTS=true",
                 "WEB_METRICS_URL=/Metrics",
                 "WEB_STRIP_DOUBLE_SLASH=false",
+                "WEB_BASE_URL=http://localhost:9913",
                 "DATABASE_ENGINE=Sqlite",
                 $"DATABASE_SQLITE_FILE={config.DbFile}",
                 "DATABASE_SQLITE_POOL_CONNECTION=true"

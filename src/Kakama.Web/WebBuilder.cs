@@ -158,6 +158,7 @@ namespace Kakama.Web
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
             builder.Services.AddSingleton<IKakamaApi>( api );
+            builder.Services.AddSingleton( webConfig );
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

@@ -29,12 +29,14 @@ namespace Kakama.Web.Controllers
         // ---------------- Fields ----------------
 
         private readonly IKakamaApi api;
+        private readonly WebConfig webConfig;
 
         // ---------------- Constructor ----------------
 
-        public ProfileController( IKakamaApi api )
+        public ProfileController( IKakamaApi api, WebConfig webConfig )
         {
             this.api = api;
+            this.webConfig = webConfig;
         }
 
         // ---------------- Functions ----------------
@@ -67,7 +69,7 @@ namespace Kakama.Web.Controllers
                     profileModel.Namespace,
                     profileModel.RsaKey,
                     profileModel.ProfileMetaData,
-                    "https://shendrick.net"
+                    profileModel.BaseUrl.ToString()
                 );
 
                 return Json( service );
@@ -84,6 +86,14 @@ namespace Kakama.Web.Controllers
                 () => this.api.NamespaceManager.GetNamespaceBySlug( namespaceSlug )
             );
 
+            Uri baseUri = this.webConfig.GetExpectedBaseUri( ns );
+            if( this.IsRequestUrlCompatible( baseUri ) == false )
+            {
+                // We'll treat this as a 404, since the namespace _technically_
+                // doesn't exist on this URL.
+                throw new NamespaceNotFoundException( "Could not find specified namespace." );
+            }
+
             Api.Models.Profile profileObj = await Task.Run(
                 () => this.api.ProfileManager.GetProfileBySlug( ns.Id, profileSlug )
             );
@@ -96,7 +106,7 @@ namespace Kakama.Web.Controllers
                 () => this.api.ProfileManager.GetRsaKey( profileObj.Id )
             );
 
-            return new ProfileModel( ns, profileObj, rsaKey, metaData );
+            return new ProfileModel( ns, baseUri, profileObj, rsaKey, metaData );
         }
     }
 }

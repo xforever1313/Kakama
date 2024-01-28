@@ -20,7 +20,6 @@ using System.Diagnostics;
 using Kakama.Api;
 using Kakama.Api.Models;
 using Kakama.Web.Models;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kakama.Web.Controllers

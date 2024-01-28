@@ -16,6 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using Kakama.Api.Models;
 using SethCS.Exceptions;
 
 namespace Kakama.Web
@@ -29,6 +30,18 @@ namespace Kakama.Web
         /// of the URL.
         /// </summary>
         public string BasePath { get; init; } = "";
+
+        /// <summary>
+        /// If <see cref="Api.Models.Namespace.BaseUrl"/> is set to null,
+        /// this is used instead.
+        /// 
+        /// This should be set to your front-facing URL
+        /// (e.g. https://shendrick.net).
+        /// 
+        /// This _is_ allowed to be null, but it means that all namespaces must have
+        /// their base URL set.
+        /// </summary>
+        public Uri? DefaultBaseUrl { get; init; } = null;
 
         /// <summary>
         /// If the given request has a port in
@@ -85,11 +98,19 @@ namespace Kakama.Web
                 };
             }
 
-            if( NotNull( "WEB_BASEPATH", out string basePath ) )
+            if( NotNull( "WEB_BASE_PATH", out string basePath ) )
             {
                 settings = settings with
                 {
                     BasePath = basePath
+                };
+            }
+
+            if( NotNull( "WEB_BASE_URL", out string baseUrl ) )
+            {
+                settings = settings with
+                {
+                    DefaultBaseUrl = new Uri( baseUrl )
                 };
             }
 
@@ -148,6 +169,33 @@ namespace Kakama.Web
                 throw new ListedValidationException(
                     $"Error when validating {nameof( WebConfig )}",
                     errors
+                );
+            }
+        }
+
+        public static Uri GetExpectedBaseUri( this WebConfig webConfig, Namespace targetNamespace )
+        {
+            // Target namespace's URL has priority, return that
+            // if its set.
+            if( targetNamespace.BaseUrl is not null )
+            {
+                return targetNamespace.BaseUrl;
+            }
+            // Otherwise, fallback to the website default, assuming its specified.
+            else if(
+                ( targetNamespace.BaseUrl is null ) &&
+                ( webConfig.DefaultBaseUrl is not null )
+            )
+            {
+                return webConfig.DefaultBaseUrl;
+            }
+            // If both are not specified, that's a configuration problem
+            // the site admin needs to handle.
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Base URL is not set for namespace ID {targetNamespace.Id}, and there is no default one set.{Environment.NewLine}" +
+                    $"Either set the default base url in {nameof( WebConfig )}, or set the base URL on namespace {targetNamespace.Id}."
                 );
             }
         }

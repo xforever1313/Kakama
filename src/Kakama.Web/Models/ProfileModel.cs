@@ -16,7 +16,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Api;
 using Kakama.Api.Models;
 
 namespace Kakama.Web.Models
@@ -27,12 +26,14 @@ namespace Kakama.Web.Models
 
         public ProfileModel(
             Namespace @namespace,
+            Uri baseUrl,
             Profile profile,
             RsaKey rsaKey,
             IEnumerable<ProfileMetaData> profileMetaData
         )
         {
             this.Namespace = @namespace;
+            this.BaseUrl = baseUrl;
             this.Profile = profile;
             this.RsaKey = rsaKey;
             this.ProfileMetaData = profileMetaData;
@@ -41,6 +42,8 @@ namespace Kakama.Web.Models
         // ---------------- Properties ----------------
 
         public Namespace Namespace { get; }
+
+        public Uri BaseUrl { get; }
 
         public Profile Profile { get; }
 
