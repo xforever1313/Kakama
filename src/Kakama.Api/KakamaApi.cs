@@ -26,7 +26,7 @@ namespace Kakama.Api
     {
         // ---------------- Properties ----------------
 
-        ILogger Log { get; }
+        IKakamaLogger Log { get; }
 
         NamespaceManager NamespaceManager { get; }
 
@@ -51,6 +51,8 @@ namespace Kakama.Api
         protected readonly KakamaSettings settings;
 
         protected readonly bool runScheduledEvents;
+
+        private readonly KakamaLogger log;
 
         private readonly ScheduledEventManager eventManager;
 
@@ -107,10 +109,10 @@ namespace Kakama.Api
                 );
             }
 
-            this.Log = log;
+            this.log = new KakamaLogger( log );
             this.NamespaceManager = new NamespaceManager( this );
             this.ProfileManager = new ProfileManager( this );
-            this.eventManager = new ScheduledEventManager( this );
+            this.eventManager = new ScheduledEventManager( this, this.log.RealLog );
             this.DateTimeFactory = dateTimeFactory;
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
@@ -120,7 +122,7 @@ namespace Kakama.Api
 
         // ---------------- Properties ----------------
 
-        public ILogger Log { get; }
+        public IKakamaLogger Log => this.log;
 
         public NamespaceManager NamespaceManager { get; }
 

@@ -18,7 +18,6 @@
 
 using Kakama.Api.DatabaseEngines;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 namespace Kakama.Api
 {
@@ -28,7 +27,7 @@ namespace Kakama.Api
 
         private IDatabaseEngine? dbEngine;
 
-        private ILogger? log;
+        private IKakamaLogger? log;
 
         // ---------------- Constructor ----------------
 
@@ -38,7 +37,7 @@ namespace Kakama.Api
 
         // ---------------- Properties ----------------
 
-        protected ILogger Log =>
+        protected IKakamaLogger Log =>
             this.log ?? throw new ArgumentNullException( nameof( this.log ) );
 
         private IDatabaseEngine DbEngine
@@ -52,7 +51,7 @@ namespace Kakama.Api
             this.Database.EnsureCreated();
         }
 
-        internal void Init( IDatabaseEngine dbEngine, ILogger log )
+        internal void Init( IDatabaseEngine dbEngine, IKakamaLogger log )
         {
             this.dbEngine = dbEngine;
             this.log = log;

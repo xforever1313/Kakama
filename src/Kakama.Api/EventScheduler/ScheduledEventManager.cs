@@ -16,6 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Logging;
 using Serilog.Extensions.Logging;
@@ -57,7 +58,7 @@ namespace Kakama.Api.EventScheduler
 
         private const string eventInfoKey = "eventInfo";
 
-        private readonly IKakamaApi api;
+        private readonly KakamaApi api;
 
         private readonly Dictionary<int, ITrigger> events;
 
@@ -69,12 +70,12 @@ namespace Kakama.Api.EventScheduler
 
         // ---------------- Constructor ----------------
 
-        public ScheduledEventManager( IKakamaApi api )
+        public ScheduledEventManager( KakamaApi api, Serilog.ILogger log )
         {
             this.api = api;
             this.events = new Dictionary<int, ITrigger>();
 
-            var msLogger = new SerilogLoggerFactory( this.api.Log );
+            var msLogger = new SerilogLoggerFactory( log );
             LogContext.SetCurrentLogProvider( msLogger );
 
             this.taskScheduler = SchedulerBuilder.Create()
