@@ -54,7 +54,7 @@ namespace Kakama.Api
 
         private readonly KakamaLogger log;
 
-        private readonly ScheduledEventManager eventManager;
+        private readonly IDisposeableScheduledEventManager eventManager;
 
         private readonly IEnumerable<FileInfo> pluginPaths;
 
@@ -112,7 +112,16 @@ namespace Kakama.Api
             this.log = new KakamaLogger( log );
             this.NamespaceManager = new NamespaceManager( this );
             this.ProfileManager = new ProfileManager( this );
-            this.eventManager = new ScheduledEventManager( this, this.log.RealLog );
+
+            if( this.runScheduledEvents )
+            {
+                this.eventManager = new ScheduledEventManager( this, this.log.RealLog );
+            }
+            else
+            {
+                this.eventManager = new DisabledScheduledEventManager();
+            }
+
             this.DateTimeFactory = dateTimeFactory;
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
@@ -150,7 +159,7 @@ namespace Kakama.Api
 
             LoadPlugins();
 
-            if( this.runScheduledEvents )
+            if( this.eventManager.Enabled )
             {
                 this.eventManager.Start();
             }

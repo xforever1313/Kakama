@@ -16,41 +16,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Logging;
 using Serilog.Extensions.Logging;
 
 namespace Kakama.Api.EventScheduler
 {
-    public interface IScheduledEventManager
-    {
-        /// <summary>
-        /// Configures the given event.
-        /// If the event's <see cref="ScheduledEvent.Id"/> is zero,
-        /// then the event will be added, otherwise it will be modified.
-        /// 
-        /// When invoking this, the passed in <see cref="ScheduledEvent.Id"/>
-        /// will be modified.
-        /// </summary>
-        /// <returns>The ID of the event configured.</returns>
-        int ConfigureEvent( ScheduledEvent e );
-
-        /// <summary>
-        /// Removes the given event, and stops
-        /// any further events from happening it.  If an event is already
-        /// scheduled to fire, and this is called,
-        /// the event may not be cancelled.
-        /// 
-        /// No-op if no such event Id exists.
-        /// </summary>
-        void RemoveEvent( int eventId );
-    }
-
     /// <summary>
     /// Manages timed events.
     /// </summary>
-    internal class ScheduledEventManager : IScheduledEventManager, IDisposable
+    internal class ScheduledEventManager : IDisposeableScheduledEventManager
     {
         // ---------------- Fields ----------------
 
@@ -102,6 +77,8 @@ namespace Kakama.Api.EventScheduler
         }
 
         // ---------------- Properties ----------------
+
+        public bool Enabled => true;
 
         // ---------------- Functions ----------------
 
