@@ -17,6 +17,7 @@
 //
 
 using Kakama.Api;
+using Kakama.Standard;
 using Moq;
 using Serilog;
 

@@ -19,6 +19,7 @@
 using Kakama.Api.DatabaseEngines;
 using Kakama.Api.EventScheduler;
 using Kakama.Api.Logging;
+using Kakama.Standard;
 using Kakama.Standard.Logging;
 using Serilog;
 
