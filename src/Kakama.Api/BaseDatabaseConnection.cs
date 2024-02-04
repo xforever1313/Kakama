@@ -17,6 +17,7 @@
 //
 
 using Kakama.Api.DatabaseEngines;
+using Kakama.Standard.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kakama.Api

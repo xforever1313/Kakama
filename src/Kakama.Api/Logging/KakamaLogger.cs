@@ -16,9 +16,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using Kakama.Standard.Logging;
 using Serilog;
 
-namespace Kakama.Api
+namespace Kakama.Api.Logging
 {
     /// <summary>
     /// Wrapper to an actual ILogger instance.

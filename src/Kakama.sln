@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.Analyzer", "..\SethCS\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kakama.Cli", "Kakama.Cli\Kakama.Cli.csproj", "{AB0837CC-051D-4371-8F70-A70A768FA2CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kakama.Standard", "Kakama.Standard\Kakama.Standard.csproj", "{7CC7013B-26F5-4ADB-BA84-F0B3531B1DDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{AB0837CC-051D-4371-8F70-A70A768FA2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB0837CC-051D-4371-8F70-A70A768FA2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB0837CC-051D-4371-8F70-A70A768FA2CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CC7013B-26F5-4ADB-BA84-F0B3531B1DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CC7013B-26F5-4ADB-BA84-F0B3531B1DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CC7013B-26F5-4ADB-BA84-F0B3531B1DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CC7013B-26F5-4ADB-BA84-F0B3531B1DDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

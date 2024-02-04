@@ -18,7 +18,7 @@
 
 using dotenv.net;
 using Kakama.Api;
-using Kakama.Api.Reporting;
+using Kakama.Api.Logging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Mono.Options;
 using Prometheus;

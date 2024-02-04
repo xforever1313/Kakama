@@ -19,7 +19,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Kakama.Api.Reporting
+namespace Kakama.Api.Logging
 {
     /// <summary>
     /// Event that is fired when one of the counts in

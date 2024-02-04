@@ -16,11 +16,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Api.Reporting;
+using Kakama.Api.Logging;
 using Serilog.Events;
 using Serilog.Parsing;
 
-namespace Kakama.Tests.Api.Reporting
+namespace Kakama.Tests.Api.Logging
 {
     [TestClass]
     public sealed class LogMessageCounterTests

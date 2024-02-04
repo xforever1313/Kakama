@@ -16,7 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Api.Reporting;
+using Kakama.Api.Logging;
 using Prometheus;
 
 namespace Kakama.Web

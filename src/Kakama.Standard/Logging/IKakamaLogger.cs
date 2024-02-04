@@ -16,7 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-namespace Kakama.Api
+namespace Kakama.Standard.Logging
 {
     /// <summary>
     /// Wrapper to an actual ILogger instance.

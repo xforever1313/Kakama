@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
+    <ProjectReference Include="..\Kakama.Standard\Kakama.Standard.csproj" />
   </ItemGroup>
 
   <ItemGroup>
