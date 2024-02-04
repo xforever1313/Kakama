@@ -176,6 +176,7 @@ namespace Kakama.Tests.Api
                 Description = "Some Description",
                 NamespaceId = ns.Id,
                 ImageUrl = new Uri( "https://shendrick.net/static/img/me.jpg" ),
+                ProfileUrl = new Uri( "https://shendrick.net/posts.html" ),
                 Slug = "some-slug"
             };
 

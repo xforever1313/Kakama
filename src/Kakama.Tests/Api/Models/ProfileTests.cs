@@ -36,6 +36,7 @@ namespace Kakama.Tests.Api.Models
                 ImageUrl = new Uri( "https://shendrick.net/static/img/me.jpg" ),
                 Name = "xforever1313",
                 NamespaceId = 1,
+                ProfileUrl = new Uri( "https://shendrick.net/posts.html" ),
                 RsaKeyId = 1,
                 Slug = "xforever-1313"
             };
@@ -46,8 +47,13 @@ namespace Kakama.Tests.Api.Models
             uut.Validate();
             uut = backup with { };
 
-            // Null URL is fine.
+            // Null image URL is fine.
             uut.ImageUrl = null;
+            uut.Validate();
+            uut = backup with { };
+
+            // Null profile URL is fine.
+            uut.ProfileUrl = null;
             uut.Validate();
             uut = backup with { };
 

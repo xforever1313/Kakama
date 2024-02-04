@@ -79,6 +79,16 @@ namespace Kakama.Cli.Commands.Profile
             };
             this.RootCommand.Add( imageUrlArgument );
 
+            var profileUrlArgument = new Option<Uri?>(
+                "--profile_url",
+                () => null,
+                "URL to the human readable profile image.  If not specified, Kakama's default profile layout will be used."
+            )
+            {
+                IsRequired = false
+            };
+            this.RootCommand.Add( profileUrlArgument );
+
             this.RootCommand.SetHandler(
                 this.Handler,
                 globalOptions.EnvFileOption,
@@ -86,7 +96,8 @@ namespace Kakama.Cli.Commands.Profile
                 nameArgument,
                 slugArgument,
                 descriptionArgument,
-                imageUrlArgument
+                imageUrlArgument,
+                profileUrlArgument
             );
         }
 
@@ -102,7 +113,8 @@ namespace Kakama.Cli.Commands.Profile
             string name,
             string? slug,
             string? description,
-            Uri? imageUrl
+            Uri? imageUrl,
+            Uri? profileUrl
         )
         {
             var profile = new Api.Models.Profile
@@ -111,7 +123,8 @@ namespace Kakama.Cli.Commands.Profile
                 Name = name,
                 Slug = slug,
                 Description = description,
-                ImageUrl = imageUrl
+                ImageUrl = imageUrl,
+                ProfileUrl = profileUrl
             };
 
             using KakamaApi api = ApiFactory.CreateApi( envFileLocation );

@@ -41,20 +41,27 @@ namespace Kakama.Web.Controllers
 
         // ---------------- Functions ----------------
 
-#if false
-        [Route( "/{namespace}/{profile}" )]
-        public IActionResult Index( [FromRoute]string @namespace, string profile )
+        [Route( "/{namespace}/{profile}/" )]
+        [Route( "/{namespace}/{profile}/index.html" )]
+        public async Task<IActionResult> Index( [FromRoute]string @namespace, string profile )
         {
             try
             {
-
+                ProfileModel profileModel = await GetProfileModel( @namespace, profile );
+                if( profileModel.Profile.ProfileUrl is not null )
+                {
+                    return Redirect( profileModel.Profile.ProfileUrl.ToString() );
+                }
+                else
+                {
+                    return View( profileModel );
+                }
             }
             catch( NotFoundException e )
             {
                 return NotFound( e.Message );
             }
         }
-#endif
 
         [Route( "/{namespace}/{profile}/profile.json" )]
         public async Task<IActionResult> ProfileJson( [FromRoute] string @namespace, string profile )

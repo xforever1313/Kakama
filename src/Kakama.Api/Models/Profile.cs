@@ -121,6 +121,17 @@ namespace Kakama.Api.Models
         /// An optional URL to the Profile's image.
         /// </summary>
         public Uri? ImageUrl { get; set; } = null;
+
+        /// <summary>
+        /// The link to the human-readable profile.
+        /// This is useful if the information about the profile
+        /// lives under a different URL, while Kakama serves as the 
+        /// activity pub integration.
+        /// 
+        /// If this is set to null, Kakama's default profile
+        /// page will be used.
+        /// </summary>
+        public Uri? ProfileUrl { get; set; } = null;
     }
 
     public static class ProfileExtensions
@@ -216,7 +227,7 @@ namespace Kakama.Api.Models
             string followersUrl = $"{profileFolderUrl}/followers.json";
 
             // Human Readable URLs
-            string profileUrl = $"{profileFolderUrl}/index.html";
+            Uri profileUrl = profile.ProfileUrl ?? new Uri( $"{profileFolderUrl}/index.html" );
 
             List<IObjectOrLink>? metadata;
             if( profileMetaData.Any() == false )
@@ -315,7 +326,7 @@ namespace Kakama.Api.Models
                 { 
                     new Link
                     {
-                        Href = new Uri( profileUrl )
+                        Href = profileUrl
                     }
                 },
                 Inbox = new Link

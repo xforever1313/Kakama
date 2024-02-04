@@ -47,7 +47,7 @@ namespace DevOps.Staging
 
                 "namespace add --name=\"Default Namespace\"",
 
-                "profile add --namespace_id=2 --name=\"Seth Hendrick\" --slug=shendrick13 --description=\"This is me!\" --image_url=https://shendrick.net/static/img/me.jpg",
+                "profile add --namespace_id=2 --name=\"Seth Hendrick\" --slug=shendrick13 --description=\"This is me!\" --image_url=https://shendrick.net/static/img/me.jpg --profile_url=https://shendrick.net/posts.html",
                 "profile add_metadata --profile_id=1 --name=Pronouns --value=he/him/his --explicit_order=1",
                 "profile add_metadata --profile_id=1 --name=Website --value=https://shendrick.net --explicit_order=0",
 
