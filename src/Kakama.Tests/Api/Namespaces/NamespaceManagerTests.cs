@@ -17,10 +17,10 @@
 //
 
 using Kakama.Api;
-using Kakama.Api.Models;
+using Kakama.Standard.Namespaces;
 using SethCS.Exceptions;
 
-namespace Kakama.Tests.Api
+namespace Kakama.Tests.Api.Namespaces
 {
     [TestClass]
     [DoNotParallelize] // <- Makes sure we don't share the .db file on multiple threads.

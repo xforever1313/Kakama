@@ -17,9 +17,8 @@
 //
 
 using System.ComponentModel.DataAnnotations;
-using SethCS.Exceptions;
 
-namespace Kakama.Api.Models
+namespace Kakama.Standard.Namespaces
 {
     /// <summary>
     /// A namespace contains profiles.
@@ -67,28 +66,5 @@ namespace Kakama.Api.Models
         /// the base web config is set to something if that's the case.
         /// </summary>
         public Uri? BaseUri { get; set; } = null;
-    }
-
-    internal static class NamespaceExtensions
-    {
-        public static void Validate( this Namespace ns )
-        {
-            var errors = new List<string>();
-
-            if( ns.Id < 0 )
-            {
-                errors.Add( $"ID can not be less than zero, got: {ns.Id}." );
-            }
-
-            if( string.IsNullOrWhiteSpace( ns.Name ) )
-            {
-                errors.Add( $"Namespace name can not be null, empty, or whitespace" );
-            }
-
-            if( errors.Any() )
-            {
-                throw new ListedValidationException( "Errors when validating namespace", errors );
-            }
-        }
     }
 }

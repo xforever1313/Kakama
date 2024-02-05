@@ -17,6 +17,7 @@
 //
 
 using Kakama.Api.Models;
+using Kakama.Standard.Namespaces;
 
 namespace Kakama.Web.Models
 {

@@ -18,8 +18,9 @@
 
 using System.CommandLine;
 using Kakama.Api;
+using Kakama.Standard.Namespaces;
 
-namespace Kakama.Cli.Commands.Namespace
+namespace Kakama.Cli.Commands.Namespaces
 {
     public sealed class NamespaceAddCommand : IKakamaCommand
     {
@@ -80,7 +81,7 @@ namespace Kakama.Cli.Commands.Namespace
 
         private void Handler( string envFileLocation, string name, string? slug, Uri? baseUri )
         {
-            var ns = new Api.Models.Namespace
+            var ns = new Namespace
             {
                 BaseUri = baseUri,
                 Name = name,

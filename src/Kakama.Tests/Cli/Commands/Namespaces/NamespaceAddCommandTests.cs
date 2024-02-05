@@ -16,7 +16,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-namespace Kakama.Tests.Cli.Commands.Namespace
+using Kakama.Standard.Namespaces;
+
+namespace Kakama.Tests.Cli.Commands.Namespaces
 {
     [TestClass]
     [DoNotParallelize] // <- Makes sure we don't share the .db file on multiple threads.
@@ -66,7 +68,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 $"--name={expectedName}"
             };
 
-            var expectedNs = new Kakama.Api.Models.Namespace
+            var expectedNs = new Namespace
             {
                 Id = 1,
                 BaseUri = null,
@@ -79,7 +81,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             Assert.AreEqual( 0, exitCode );
 
             // Check
-            IEnumerable<Kakama.Api.Models.Namespace> allNamespaces = this.Uut.ApiHarness.NamespaceManager.GetAllNamespaces();
+            IEnumerable<Namespace> allNamespaces = this.Uut.ApiHarness.NamespaceManager.GetAllNamespaces();
             Assert.AreEqual( 1, allNamespaces.Count() );
 
             Assert.AreEqual( expectedNs, allNamespaces.First() );
@@ -102,7 +104,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 $"--base_uri={expectedBaseUri}"
             };
 
-            var expectedNs = new Kakama.Api.Models.Namespace
+            var expectedNs = new Namespace
             {
                 Id = 1,
                 BaseUri = expectedBaseUri,
@@ -115,7 +117,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             Assert.AreEqual( 0, exitCode );
 
             // Check
-            IEnumerable<Kakama.Api.Models.Namespace> allNamespaces = this.Uut.ApiHarness.NamespaceManager.GetAllNamespaces();
+            IEnumerable<Namespace> allNamespaces = this.Uut.ApiHarness.NamespaceManager.GetAllNamespaces();
             Assert.AreEqual( 1, allNamespaces.Count() );
 
             Assert.AreEqual( expectedNs, allNamespaces.First() );

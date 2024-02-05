@@ -18,7 +18,7 @@
 
 using System.Diagnostics;
 using Kakama.Api;
-using Kakama.Api.Models;
+using Kakama.Standard.Namespaces;
 using Kakama.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 

@@ -19,7 +19,7 @@
 using System.CommandLine;
 using Kakama.Api;
 
-namespace Kakama.Cli.Commands.Namespace
+namespace Kakama.Cli.Commands.Namespaces
 {
     public sealed class NamespaceDeleteCommand : IKakamaCommand
     {

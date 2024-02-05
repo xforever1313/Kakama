@@ -16,7 +16,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-namespace Kakama.Tests.Cli.Commands.Namespace
+using Kakama.Standard.Namespaces;
+
+namespace Kakama.Tests.Cli.Commands.Namespaces
 {
     [TestClass]
     [DoNotParallelize] // <- Makes sure we don't share the .db file on multiple threads.
@@ -58,7 +60,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         public void ModifyAllButNoIdSpecified()
         {
             // Setup
-            Kakama.Api.Models.Namespace startingNs = AddStartingNamespaceToDb();
+            Namespace startingNs = AddStartingNamespaceToDb();
 
             var args = new string[]
             {
@@ -77,7 +79,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             Assert.AreNotEqual( 0, exitCode );
 
             // Make sure our existing namespace was not modified.
-            Kakama.Api.Models.Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
+            Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
             Assert.AreEqual( startingNs, actualNs );
         }
 
@@ -85,7 +87,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         public void ModifyNameTest()
         {
             // Setup
-            Kakama.Api.Models.Namespace startingNs = AddStartingNamespaceToDb();
+            Namespace startingNs = AddStartingNamespaceToDb();
 
             var args = new string[]
             {
@@ -95,7 +97,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 "--name=New Name"
             };
 
-            Kakama.Api.Models.Namespace expectedNs = startingNs with
+            Namespace expectedNs = startingNs with
             {
                 Name = "New Name"
             };
@@ -106,7 +108,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             // Check
             Assert.AreEqual( 0, exitCode );
 
-            Kakama.Api.Models.Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
+            Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
             Assert.AreEqual( expectedNs, actualNs );
         }
 
@@ -114,7 +116,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         public void ModifySlugTest()
         {
             // Setup
-            Kakama.Api.Models.Namespace startingNs = AddStartingNamespaceToDb();
+            Namespace startingNs = AddStartingNamespaceToDb();
 
             var args = new string[]
             {
@@ -124,7 +126,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 "--slug=new-slug"
             };
 
-            Kakama.Api.Models.Namespace expectedNs = startingNs with
+            Namespace expectedNs = startingNs with
             {
                 Slug = "new-slug"
             };
@@ -135,7 +137,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             // Check
             Assert.AreEqual( 0, exitCode );
 
-            Kakama.Api.Models.Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
+            Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
             Assert.AreEqual( expectedNs, actualNs );
         }
 
@@ -143,7 +145,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         public void ClearSlugTest()
         {
             // Setup
-            Kakama.Api.Models.Namespace startingNs = AddStartingNamespaceToDb();
+            Namespace startingNs = AddStartingNamespaceToDb();
 
             var args = new string[]
             {
@@ -153,7 +155,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 "--slug=_"
             };
 
-            Kakama.Api.Models.Namespace expectedNs = startingNs with
+            Namespace expectedNs = startingNs with
             {
                 // Will become null, and therefore before
                 // a version of the name.
@@ -166,7 +168,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             // Check
             Assert.AreEqual( 0, exitCode );
 
-            Kakama.Api.Models.Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
+            Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
             Assert.AreEqual( expectedNs, actualNs );
         }
 
@@ -174,7 +176,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         public void ModifyBaseUriTest()
         {
             // Setup
-            Kakama.Api.Models.Namespace startingNs = AddStartingNamespaceToDb();
+            Namespace startingNs = AddStartingNamespaceToDb();
 
             var args = new string[]
             {
@@ -184,7 +186,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 "--base_uri=https://troop53stories.shendrick.net"
             };
 
-            Kakama.Api.Models.Namespace expectedNs = startingNs with
+            Namespace expectedNs = startingNs with
             {
                 BaseUri = new Uri( "https://troop53stories.shendrick.net" )
             };
@@ -195,7 +197,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             // Check
             Assert.AreEqual( 0, exitCode );
 
-            Kakama.Api.Models.Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
+            Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
             Assert.AreEqual( expectedNs, actualNs );
         }
 
@@ -203,7 +205,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
         public void ClearBaseUriTest()
         {
             // Setup
-            Kakama.Api.Models.Namespace startingNs = AddStartingNamespaceToDb();
+            Namespace startingNs = AddStartingNamespaceToDb();
 
             var args = new string[]
             {
@@ -213,7 +215,7 @@ namespace Kakama.Tests.Cli.Commands.Namespace
                 "--base_uri=_"
             };
 
-            Kakama.Api.Models.Namespace expectedNs = startingNs with
+            Namespace expectedNs = startingNs with
             {
                 BaseUri = null
             };
@@ -224,15 +226,15 @@ namespace Kakama.Tests.Cli.Commands.Namespace
             // Check
             Assert.AreEqual( 0, exitCode );
 
-            Kakama.Api.Models.Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
+            Namespace actualNs = this.Uut.ApiHarness.NamespaceManager.GetNamespaceById( startingNs.Id );
             Assert.AreEqual( expectedNs, actualNs );
         }
 
         // ---------------- Test Helpers ----------------
 
-        private Kakama.Api.Models.Namespace AddStartingNamespaceToDb()
+        private Namespace AddStartingNamespaceToDb()
         {
-            var startingNs = new Kakama.Api.Models.Namespace
+            var startingNs = new Namespace
             {
                 Id = 0,
                 BaseUri = new Uri( "https://shendrick.net" ),

@@ -19,8 +19,10 @@
 using Kakama.Api.DatabaseEngines;
 using Kakama.Api.EventScheduler;
 using Kakama.Api.Logging;
+using Kakama.Api.Namespaces;
 using Kakama.Standard;
 using Kakama.Standard.Logging;
+using Kakama.Standard.Namespaces;
 using Serilog;
 
 namespace Kakama.Api
@@ -31,7 +33,7 @@ namespace Kakama.Api
 
         IKakamaLogger Log { get; }
 
-        NamespaceManager NamespaceManager { get; }
+        INamespaceManager NamespaceManager { get; }
 
         ProfileManager ProfileManager { get; }
 
@@ -136,7 +138,7 @@ namespace Kakama.Api
 
         public IKakamaLogger Log => this.log;
 
-        public NamespaceManager NamespaceManager { get; }
+        public INamespaceManager NamespaceManager { get; }
 
         public ProfileManager ProfileManager { get; }
 

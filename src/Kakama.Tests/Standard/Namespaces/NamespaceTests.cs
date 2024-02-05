@@ -16,10 +16,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Api.Models;
+using Kakama.Api.Namespaces;
+using Kakama.Standard.Namespaces;
 using SethCS.Exceptions;
 
-namespace Kakama.Tests.Api.Models
+namespace Kakama.Tests.Standard.Namespaces
 {
     [TestClass]
     public sealed class NamespaceTests

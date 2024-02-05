@@ -18,8 +18,9 @@
 
 using System.CommandLine;
 using Kakama.Api;
+using Kakama.Standard.Namespaces;
 
-namespace Kakama.Cli.Commands.Namespace
+namespace Kakama.Cli.Commands.Namespaces
 {
     public sealed class NamespaceListCommand : IKakamaCommand
     {
@@ -45,7 +46,7 @@ namespace Kakama.Cli.Commands.Namespace
         private void Handler( string envFileLocation )
         {
             using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
-            foreach( Api.Models.Namespace ns in api.NamespaceManager.GetAllNamespaces() )
+            foreach( Namespace ns in api.NamespaceManager.GetAllNamespaces() )
             {
                 this.consoleOut.WriteLine( ns );
             }

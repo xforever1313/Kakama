@@ -18,8 +18,9 @@
 
 using System.CommandLine;
 using Kakama.Api;
+using Kakama.Standard.Namespaces;
 
-namespace Kakama.Cli.Commands.Namespace
+namespace Kakama.Cli.Commands.Namespaces
 {
     public sealed class NamespaceModifyCommand : IKakamaCommand
     {
@@ -109,7 +110,7 @@ namespace Kakama.Cli.Commands.Namespace
         {
             using KakamaApi api = ApiFactory.CreateApi( envFileLocation );
 
-            Api.Models.Namespace ns = api.NamespaceManager.GetNamespaceById( id );
+            Namespace ns = api.NamespaceManager.GetNamespaceById( id );
             if( newName is not null )
             {
                 ns = ns with { Name = newName };

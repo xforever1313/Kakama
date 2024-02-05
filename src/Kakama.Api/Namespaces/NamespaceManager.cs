@@ -16,14 +16,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using Kakama.Api.Models;
+using Kakama.Standard.Namespaces;
 using Microsoft.EntityFrameworkCore;
 using SethCS.Exceptions;
 using Slugify;
 
-namespace Kakama.Api
+namespace Kakama.Api.Namespaces
 {
-    public class NamespaceManager
+    public class NamespaceManager : INamespaceManager
     {
         // ---------------- Fields ----------------
 
@@ -38,22 +38,7 @@ namespace Kakama.Api
 
         // ---------------- Functions ----------------
 
-        /// <summary>
-        /// Adds or modifies the given namespace in the database.
-        /// If <see cref="Namespace.Id"/> is set to 0,
-        /// the namespace will be added.  Else, the namespace
-        /// at that ID will be modified.
-        /// </summary>
-        /// <param name="ns">
-        /// The namespace to add or modify.
-        /// Note, the passed in object will be modified to reflect what is in the database.
-        /// If this is not desired, it can be cloned with the record class's "with" syntax
-        /// before being passed in.
-        /// </param>
-        /// <returns>
-        /// The ID of the namespace that was modified, or the
-        /// new ID of the namespace that was added.
-        /// </returns>
+        /// <inheritdoc/>
         public int ConfigureNamespace( Namespace ns )
         {
             ns.Validate();
@@ -86,6 +71,7 @@ namespace Kakama.Api
             return id;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Namespace> GetAllNamespaces()
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
@@ -94,6 +80,7 @@ namespace Kakama.Api
             }
         }
 
+        /// <inheritdoc/>
         public List<Namespace> GetNamespacesCompatibleWithUrl( Uri uri )
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
@@ -104,6 +91,7 @@ namespace Kakama.Api
             }
         }
 
+        /// <inheritdoc/>
         public Namespace? TryGetNamespaceBySlug( string slug )
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
@@ -114,12 +102,14 @@ namespace Kakama.Api
             }
         }
 
+        /// <inheritdoc/>
         public Namespace GetNamespaceBySlug( string slug )
         {
             return TryGetNamespaceBySlug( slug ) ??
                 throw new NamespaceNotFoundException( $"Could not find namespace located at slug: {slug}" );
         }
 
+        /// <inheritdoc/>
         public Namespace? TryGetNamespaceById( int id )
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
@@ -130,15 +120,14 @@ namespace Kakama.Api
             }
         }
 
+        /// <inheritdoc/>
         public Namespace GetNamespaceById( int id )
         {
             return TryGetNamespaceById( id ) ??
                 throw new NamespaceNotFoundException( $"Could not find namespace by id: {id}" );
         }
 
-        /// <summary>
-        /// Does the given namespace by id exists?
-        /// </summary>
+        /// <inheritdoc/>
         public bool NamespaceExists( int id )
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )
@@ -149,9 +138,7 @@ namespace Kakama.Api
             }
         }
 
-        /// <summary>
-        /// Gets the total number of namespaces saved.
-        /// </summary>
+        /// <inheritdoc/>
         public int GetNumberOfNamespaces()
         {
             using( KakamaDatabaseConnection db = this.api.CreateKakamaDatabaseConnection() )

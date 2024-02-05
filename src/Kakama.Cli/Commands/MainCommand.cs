@@ -17,7 +17,7 @@
 //
 
 using System.CommandLine;
-using Kakama.Cli.Commands.Namespace;
+using Kakama.Cli.Commands.Namespaces;
 using Kakama.Cli.Commands.Profile;
 
 namespace Kakama.Cli.Commands

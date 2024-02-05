@@ -18,7 +18,7 @@
 
 using System.CommandLine;
 
-namespace Kakama.Cli.Commands.Namespace
+namespace Kakama.Cli.Commands.Namespaces
 {
     public sealed class NamespaceCommand : IKakamaCommand
     {

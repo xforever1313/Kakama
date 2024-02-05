@@ -1,4 +1,4 @@
-﻿//
+//
 // Kakama - An ActivityPub Bot Framework
 // Copyright (C) 2023-2024 Seth Hendrick
 // 
@@ -17,20 +17,30 @@
 //
 
 using Kakama.Standard.Namespaces;
+using SethCS.Exceptions;
 
-namespace Kakama.Web.Models
+namespace Kakama.Api.Namespaces
 {
-    public class NamespaceModel
+    internal static class NamespaceExtensions
     {
-        // ---------------- Constructor ----------------
-
-        public NamespaceModel( IList<Namespace> namespaces )
+        public static void Validate( this Namespace ns )
         {
-            this.Namespaces = namespaces;
+            var errors = new List<string>();
+
+            if( ns.Id < 0 )
+            {
+                errors.Add( $"ID can not be less than zero, got: {ns.Id}." );
+            }
+
+            if( string.IsNullOrWhiteSpace( ns.Name ) )
+            {
+                errors.Add( $"Namespace name can not be null, empty, or whitespace" );
+            }
+
+            if( errors.Any() )
+            {
+                throw new ListedValidationException( "Errors when validating namespace", errors );
+            }
         }
-
-        // ---------------- Properties ----------------
-
-        public IList<Namespace> Namespaces { get; }
     }
 }
